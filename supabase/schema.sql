@@ -194,6 +194,8 @@ create table if not exists eval_runs (
   groundedness_avg     float,
   refusal_accuracy     float,
   p50_latency_ms       int,
+  p50_ttft_ms          int,                  -- p50 time to first token (the PRD target)
+  cost_per_answered_usd numeric(12,8),       -- mean cost per answered question, judge excluded
   total_cost_usd       numeric(12,6),
   notes                text
 );
@@ -213,7 +215,9 @@ create table if not exists eval_results (
   should_refuse    boolean,
   judge_reason     text,
   latency_ms       int,
-  cost_usd         numeric(12,8)
+  cost_usd         numeric(12,8),
+  misses           text[],              -- must_mention groups the answer did not contain
+  request_id       uuid                 -- joins to llm_calls and the dashboard trace
 );
 
 -- ---------- Spend helpers (see supabase/migrations/001_stage1.sql) ----------

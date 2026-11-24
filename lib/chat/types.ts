@@ -35,6 +35,7 @@ export type ChatEvent =
       refusalReason?: RefusalReason;
       sources: Source[];
       citationsUsed: number[];
+      retrievedDocIds: string[]; // every retrieved chunk's document, including ones below the similarity threshold
       rescindedCited: Source[];
       cost: CostInfo;
     }

@@ -33,10 +33,11 @@ export async function* answerPolicyQuestion(a: AnswerArgs): AsyncGenerator<ChatE
   const label = safeLabel(fast.pricingKey);
   let spent = 0; // USD for the whole question: rewrite + embedding + answer
 
+  let retrievedDocIds: string[] = [];
   const refusal = (reason: RefusalReason, sources: Source[] = []): ChatEvent[] => [
     { type: "delta", text: REFUSAL },
     {
-      type: "final", requestId, answer: REFUSAL, refused: true, refusalReason: reason, sources, citationsUsed: [], rescindedCited: [],
+      type: "final", requestId, answer: REFUSAL, refused: true, refusalReason: reason, sources, citationsUsed: [], rescindedCited: [], retrievedDocIds,
       cost: { inputTokens: 0, outputTokens: 0, costUsd: spent, latencyMs: Math.round(performance.now() - started), ttftMs: null, model: label, provider: fast.provider },
     },
   ];
@@ -59,6 +60,7 @@ export async function* answerPolicyQuestion(a: AnswerArgs): AsyncGenerator<ChatE
   // 3. Retrieve, then keep only chunks that clear the similarity threshold.
   const found = await retrieve(standalone, "policy", meta);
   spent += found.embedCostUsd;
+  retrievedDocIds = [...new Set(found.chunks.map((c) => c.docId))];
   const usable = found.chunks.filter((c) => c.similarity >= env.RAG_MIN_SIMILARITY);
   // Every retrieved chunk goes in the trace, including ones below the threshold.
   const trace = found.chunks.map((c) => ({
@@ -112,7 +114,7 @@ export async function* answerPolicyQuestion(a: AnswerArgs): AsyncGenerator<ChatE
   };
   yield {
     type: "final", requestId, answer: cited.text, refused, refusalReason: refused ? "model" : undefined,
-    sources: refused ? [] : sources, citationsUsed: used,
+    sources: refused ? [] : sources, citationsUsed: used, retrievedDocIds,
     rescindedCited: sources.filter((s) => used.includes(s.n) && s.status === "rescinded"), cost,
   };
 }
