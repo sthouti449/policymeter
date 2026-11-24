@@ -1,0 +1,107 @@
+{
+  "corpus": "policy",
+  "documents": [
+    {
+      "doc_id": "ea400",
+      "file": "ea400-ai-utilization-policy-2026.pdf",
+      "title": "Artificial Intelligence (AI) Utilization Policy (EA400)",
+      "issuer": "VITA",
+      "published": "2026-06-30",
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.vita.virginia.gov/media/vitavirginiagov/it-governance/ea/pdf/Artificial-Intelligence-(AI)-Utilization-Policy.pdf"
+    },
+    {
+      "doc_id": "ea225",
+      "file": "ea225-ai-standard.pdf",
+      "title": "EA-225 Enterprise Solutions Architecture: Artificial Intelligence Standard",
+      "issuer": "VITA",
+      "published": "2023-11-16",
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.vita.virginia.gov/it-governance/enterprise-architecture/ea-library/"
+    },
+    {
+      "doc_id": "cov-ai-policy-standard-2024",
+      "file": "cov-ai-policy-standard-2024.pdf",
+      "title": "Policy Standards for the Utilization of AI by the Commonwealth of Virginia",
+      "issuer": "VITA",
+      "published": "2024-01-17",
+      "status": "current",
+      "replaced_by": null,
+      "_todo": "Confirm against EA400 revision history; if EA400 replaces it, set status to rescinded and replaced_by to 'EA400 AI Utilization Policy (June 2026)'.",
+      "url": "https://www.vita.virginia.gov/media/vitavirginiagov/it-governance/ea/pdf/Utilization-of-Artificial-Intelligence-by-COV-Policy-Standard.pdf"
+    },
+    {
+      "doc_id": "eo22",
+      "file": "eo-22-2026.pdf",
+      "title": "Executive Order 22 (2026): Data Center Accountability Framework and AI Task Force",
+      "issuer": "Office of the Governor (Spanberger)",
+      "published": "2026-09-18",
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.governor.virginia.gov/executive-actions/"
+    },
+    {
+      "doc_id": "ed6",
+      "file": "ed-6-2026.pdf",
+      "title": "Executive Directive 6 (2026): Preparedness for Cyber Threats Posed by AI",
+      "issuer": "Office of the Governor (Spanberger)",
+      "published": "2026-10-23",
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.governor.virginia.gov/executive-actions/"
+    },
+    {
+      "doc_id": "eo30",
+      "file": "eo-30-2024.pdf",
+      "title": "Executive Order 30 (2024): Implementation of Standards for the Safe Use of AI",
+      "issuer": "Office of the Governor (Youngkin)",
+      "published": "2024-01-18",
+      "status": "rescinded",
+      "replaced_by": "Executive Order 22 (Sept 18, 2026); policies published under EO 30 remain in effect until the new AI Task Force replaces them",
+      "url": "https://www.governor.virginia.gov/media/governorvirginiagov/governor-of-virginia/pdf/eo/EO-30.pdf"
+    },
+    {
+      "doc_id": "vita-ai-faqs",
+      "file": "vita-ai-faqs.pdf",
+      "title": "VITA AI Frequently Asked Questions",
+      "issuer": "VITA",
+      "published": "2026-11-23",
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.vita.virginia.gov/policy--governance/governance/artificial-intelligence/ai-faqs/"
+    },
+    {
+      "doc_id": "aia-template",
+      "file": "algorithmic-impact-assessment.pdf",
+      "title": "Algorithmic Impact Assessment (template)",
+      "issuer": "Office of Data Governance and Analytics",
+      "published": null,
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.odga.virginia.gov/media/governorvirginiagov/chief-data-officer/Algorithmic-Impact-Assessment.docx"
+    },
+    {
+      "doc_id": "eo30-task-force-report",
+      "file": "eo30-task-force-report-2026.pdf",
+      "title": "Commonwealth of Virginia AI Strategy: EO 30 Task Force Report",
+      "issuer": "Governor's AI Task Force (Youngkin administration)",
+      "published": "2026-01-14",
+      "status": "historical",
+      "replaced_by": null,
+      "url": "https://www.governor.virginia.gov/"
+    },
+    {
+      "doc_id": "jcots-2024",
+      "file": "jcots-ai-policy-practice-2024.pdf",
+      "title": "Artificial Intelligence: Policy and Practice (JCOTS RD18)",
+      "issuer": "Joint Commission on Technology and Science",
+      "published": "2024-11-01",
+      "status": "historical",
+      "replaced_by": null,
+      "optional": true,
+      "url": "https://rga.lis.virginia.gov/Published/2025/RD18/PDF"
+    }
+  ]
+}

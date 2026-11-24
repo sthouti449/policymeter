@@ -1,0 +1,23 @@
+{
+  "_readme": "Simulated agency tags for the demo. Budgets are monthly, in USD, and deliberately small so alerts trigger during a demo. These are labels for cost allocation only; no agency data is used.",
+  "warning_threshold": 0.8,
+  "breach_threshold": 1.0,
+  "agencies": [
+    { "code": "VITA", "name": "Virginia IT Agency (central)",          "monthly_budget_usd": 5.00 },
+    { "code": "DMV",  "name": "Department of Motor Vehicles",          "monthly_budget_usd": 3.00 },
+    { "code": "VDH",  "name": "Department of Health",                  "monthly_budget_usd": 3.00 },
+    { "code": "VEC",  "name": "Virginia Employment Commission",        "monthly_budget_usd": 2.00 },
+    { "code": "DSS",  "name": "Department of Social Services",         "monthly_budget_usd": 2.00 },
+    { "code": "VDOT", "name": "Department of Transportation",          "monthly_budget_usd": 2.00 },
+    { "code": "DEMO", "name": "Demo reviewer assistant (this site)",   "monthly_budget_usd": 2.00 }
+  ],
+  "use_cases": [
+    { "code": "policy-qa",          "name": "Policy Q&A" },
+    { "code": "procurement-check",  "name": "AI procurement check" },
+    { "code": "registry-help",      "name": "AI registry help" },
+    { "code": "query-rewrite",      "name": "Query rewrite (internal)" },
+    { "code": "reviewer-assistant", "name": "Ask about this demo" },
+    { "code": "eval-run",           "name": "Evaluation run" },
+    { "code": "ingestion",          "name": "Document ingestion" }
+  ]
+}
