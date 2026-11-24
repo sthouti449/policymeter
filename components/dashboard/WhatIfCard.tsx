@@ -18,7 +18,7 @@ export function WhatIfCard({ data }: { data: MetricsPayload }) {
       <p className="mb-3 text-xs" style={{ color: "var(--viz-text-2)" }}>Same logged tokens, priced on a different model.</p>
       <label className="grid gap-1 text-xs" style={{ color: "var(--viz-text-2)" }}>If this traffic ran on
         <select value={key} onChange={(e) => setKey(e.target.value)} className="rounded-md border bg-transparent px-2 py-1.5 text-sm" style={{ borderColor: "var(--viz-border)", color: "var(--viz-text-1)" }}>
-          {data.chatModels.map((m) => <option key={m.key} value={m.key} style={{ color: "#0b0b0b" }}>{m.label}{m.input === 0 ? " (price not set)" : ""}</option>)}
+          {data.chatModels.map((m) => <option key={m.key} value={m.key}>{m.label}{m.input === 0 ? " (price not set)" : ""}</option>)}
         </select>
       </label>
       {!result || !target ? (

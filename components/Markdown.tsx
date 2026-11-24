@@ -9,7 +9,7 @@ export function Inline({ text }: { text: string }) {
     <>
       {parseInline(text).map((t, i) =>
         t.kind === "bold" ? <strong key={i}>{t.text}</strong>
-        : t.kind === "code" ? <code key={i} className="rounded bg-neutral-100 px-1 py-0.5 text-[0.85em]">{t.text}</code>
+        : t.kind === "code" ? <code key={i} className="rounded bg-ink-100 px-1 py-0.5 text-[0.85em]">{t.text}</code>
         : t.kind === "link" ? <a key={i} href={t.href} target="_blank" rel="noreferrer" className="text-blue-700 underline">{t.text}</a>
         : <span key={i}>{t.text}</span>,
       )}

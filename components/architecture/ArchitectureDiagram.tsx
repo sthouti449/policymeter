@@ -14,16 +14,16 @@ function Box({ x, y, w, h, title, lines, tone = "lib" }: BoxProps) {
   return (
     <g>
       <rect x={x} y={y} width={w} height={h} rx={12} className={TONE[tone]} strokeWidth={1.5} />
-      <text x={x + w / 2} y={y + 24} textAnchor="middle" className="fill-neutral-900 text-[14px] font-semibold">{title}</text>
+      <text x={x + w / 2} y={y + 24} textAnchor="middle" className="fill-ink-900 text-[14px] font-semibold">{title}</text>
       {lines.map((l, i) => (
-        <text key={i} x={x + w / 2} y={y + 44 + i * 16} textAnchor="middle" className="fill-neutral-600 text-[11.5px]">{l}</text>
+        <text key={i} x={x + w / 2} y={y + 44 + i * 16} textAnchor="middle" className="fill-ink-600 text-[11.5px]">{l}</text>
       ))}
     </g>
   );
 }
 
 const Arrow = ({ x, y1, y2 }: { x: number; y1: number; y2: number }) => (
-  <line x1={x} y1={y1} x2={x} y2={y2} className="stroke-neutral-500" strokeWidth={1.5} markerEnd="url(#arrow)" />
+  <line x1={x} y1={y1} x2={x} y2={y2} className="stroke-ink-500" strokeWidth={1.5} markerEnd="url(#arrow)" />
 );
 
 export function ArchitectureDiagram() {
@@ -38,7 +38,7 @@ export function ArchitectureDiagram() {
         </desc>
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0 0 L10 5 L0 10 z" className="fill-neutral-500" />
+            <path d="M0 0 L10 5 L0 10 z" className="fill-ink-500" />
           </marker>
         </defs>
 
@@ -63,9 +63,9 @@ export function ArchitectureDiagram() {
 
         <Arrow x={335} y1={520} y2={472} />
         <Box tone="ui" x={40} y={520} w={590} h={42} title="scripts (tsx, run locally)" lines={[]} />
-        <text x={335} y={554} textAnchor="middle" className="fill-neutral-600 text-[11.5px]">ingest, ingest:about, seed, check:metering, eval</text>
+        <text x={335} y={554} textAnchor="middle" className="fill-ink-600 text-[11.5px]">ingest, ingest:about, seed, check:metering, eval</text>
       </svg>
-      <figcaption className="mt-2 text-sm text-neutral-600">
+      <figcaption className="mt-2 text-sm text-ink-600">
         A question passes the guardrails first, then retrieval, then one model call. Every call, including embeddings, is logged with tokens, cost, agency and use case.
       </figcaption>
     </figure>

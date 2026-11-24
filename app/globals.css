@@ -159,7 +159,8 @@
 }
 :root[data-theme="dark"] .viz-root {
   color-scheme: dark;
-  --viz-page: #0d0d0d;
+  --viz-page: transparent;
+  --viz-brand: #2f9cb0;
   --viz-surface: #1a1a19;
   --viz-text-1: #f0efec;
   --viz-text-2: #c3c2b7;
@@ -235,7 +236,7 @@
 
 @layer components {
   .card {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--color-ink-200);
     border-radius: 1rem;
     box-shadow: 0 1px 2px rgba(13, 23, 44, 0.04), 0 6px 20px rgba(13, 23, 44, 0.05);
@@ -260,12 +261,12 @@
     box-shadow: 0 1px 2px rgba(13, 23, 44, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   .btn-primary:hover:not(:disabled) { background: linear-gradient(180deg, var(--color-brand-600), var(--color-brand-700)); transform: translateY(-1px); }
-  .btn-secondary { color: var(--color-ink-800); background: #fff; border: 1px solid var(--color-ink-200); box-shadow: 0 1px 2px rgba(13, 23, 44, 0.05); }
+  .btn-secondary { color: var(--color-ink-800); background: var(--surface); border: 1px solid var(--color-ink-200); box-shadow: 0 1px 2px rgba(13, 23, 44, 0.05); }
   .btn-secondary:hover:not(:disabled) { background: var(--color-ink-50); border-color: var(--color-ink-300); }
 
   .chip {
     display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 9999px;
-    border: 1px solid var(--color-ink-200); background: #fff; padding: 0.25rem 0.75rem;
+    border: 1px solid var(--color-ink-200); background: var(--surface); padding: 0.25rem 0.75rem;
     font-size: 0.75rem; font-weight: 500; color: var(--color-ink-600);
   }
   .eyebrow { text-transform: uppercase; letter-spacing: 0.09em; font-size: 0.72rem; font-weight: 700; color: var(--color-brand-700); }
@@ -275,7 +276,7 @@
     border: 1px solid var(--color-brand-100);
   }
   .field {
-    border: 1px solid var(--color-ink-200); background: #fff; border-radius: 0.65rem; padding: 0.45rem 0.7rem;
+    border: 1px solid var(--color-ink-200); background: var(--surface); border-radius: 0.65rem; padding: 0.45rem 0.7rem;
     font-size: 0.875rem; color: var(--color-ink-800); transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .field:hover { border-color: var(--color-ink-300); }
@@ -292,3 +293,51 @@
   .card-hover:hover, .btn-primary:hover:not(:disabled) { transform: none; }
   html { scroll-behavior: auto; }
 }
+
+/* ======================================================================
+   Theme. Light is the default; data-theme="dark" flips the neutral scale and the pale brand tints.
+   Brand 500-900 stay the same, so gradients and filled buttons look the same in both themes.
+   ====================================================================== */
+:root { color-scheme: light; --surface: #ffffff; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #10272d;
+  --color-ink-50: #0a191d;
+  --color-ink-100: #112328;
+  --color-ink-200: #1e3a41;
+  --color-ink-300: #33545c;
+  --color-ink-400: #5f8089;
+  --color-ink-500: #8aa5ac;
+  --color-ink-600: #a9c0c5;
+  --color-ink-700: #c4d6d9;
+  --color-ink-800: #dce8ea;
+  --color-ink-900: #eef5f6;
+  --color-brand-50: #0d2d34;
+  --color-brand-100: #0f3a44;
+  --color-brand-200: #155260;
+  --color-brand-300: #1f7d8f;
+  --color-mint-100: #0f3a3a;
+  --color-mint-600: #4fd1b8;
+}
+/* Text in the brand colour needs to be light on a dark page. */
+:root[data-theme="dark"] .text-brand-600, :root[data-theme="dark"] .text-brand-700, :root[data-theme="dark"] .text-brand-800,
+:root[data-theme="dark"] .hover\:text-brand-600:hover, :root[data-theme="dark"] .hover\:text-brand-700:hover, :root[data-theme="dark"] .hover\:text-brand-800:hover,
+:root[data-theme="dark"] .eyebrow { color: #6fd0e0; }
+:root[data-theme="dark"] .bg-white { background-color: var(--surface); }
+:root[data-theme="dark"] .bg-white\/80 { background-color: rgba(10, 25, 29, 0.82); }
+:root[data-theme="dark"] .card, :root[data-theme="dark"] .viz-card { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25); }
+/* Status colours keep their meaning, on dark tints. */
+:root[data-theme="dark"] .bg-red-50 { background-color: #3a1618; }
+:root[data-theme="dark"] .border-red-200 { border-color: #7a2a2e; }
+:root[data-theme="dark"] .text-red-900, :root[data-theme="dark"] .text-red-700, :root[data-theme="dark"] .text-red-600 { color: #ffb4b4; }
+:root[data-theme="dark"] .bg-amber-50 { background-color: #3a2e10; }
+:root[data-theme="dark"] .text-amber-800 { color: #f5d27a; }
+:root[data-theme="dark"] .fill-amber-50 { fill: #3a2e10; }
+:root[data-theme="dark"] .stroke-amber-300 { stroke: #8a6d1f; }
+
+/* Pieces that are light-on-dark in both themes. */
+.btn-light { background: #fff; color: #00465a; }
+.btn-light:hover { background: #ebf8fa; }
+.grad-text { background: linear-gradient(90deg, #007c91, #00465a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root[data-theme="dark"] .grad-text { background-image: linear-gradient(90deg, #6fd0e0, #2f9cb0); }
+:root[data-theme="dark"] .icon-tile { color: #6fd0e0; border-color: #155260; }

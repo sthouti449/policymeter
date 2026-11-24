@@ -13,11 +13,15 @@ export const metadata: Metadata = {
   description: "Cited answers about Virginia AI policy, with every model call metered by agency and use case.",
 };
 
+// Runs before first paint so a dark-mode visitor never sees a white flash. Falls back to the OS setting.
+const THEME_SCRIPT = "try{var t=localStorage.getItem(\"pm-theme\");if(t!==\"dark\"&&t!==\"light\")t=matchMedia(\"(prefers-color-scheme: dark)\").matches?\"dark\":\"light\";document.documentElement.dataset.theme=t}catch(e){}";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} /></head>
       <body className="flex min-h-screen flex-col antialiased">
-        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">
+        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:text-ink-900 focus:px-3 focus:py-2">
           Skip to content
         </a>
         <SiteNav />

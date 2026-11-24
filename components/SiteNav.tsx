@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS = [
   { href: "/chat", label: "Policy Assistant" },
@@ -41,6 +42,7 @@ export function SiteNav() {
             );
           })}
         </ul>
+        <ThemeToggle />
       </nav>
     </header>
   );

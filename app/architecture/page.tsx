@@ -59,9 +59,9 @@ export default function ArchitecturePage() {
       <section aria-labelledby="adapter" className="card space-y-3 p-6">
         <h2 id="adapter" className="text-xl font-semibold text-ink-900">One provider adapter</h2>
         <p className="leading-relaxed text-ink-700">
-          All model calls go through <code className="rounded bg-neutral-100 px-1">lib/llm</code> (<code className="rounded bg-neutral-100 px-1">chat</code>, <code className="rounded bg-neutral-100 px-1">chatStream</code>, <code className="rounded bg-neutral-100 px-1">embed</code>); nothing else imports a model SDK.
-          Chat and embeddings are chosen separately. With <code className="rounded bg-neutral-100 px-1">auto</code>, Azure OpenAI is used when configured, then OpenAI, then Anthropic for chat, and Azure then OpenAI for embeddings. Anthropic has no embeddings API.
-          The adapter returns usage in one shape for every provider, and every call, including failures, is logged in a <code className="rounded bg-neutral-100 px-1">finally</code> block, so spend can&rsquo;t go unmetered.
+          All model calls go through <code className="rounded bg-ink-100 px-1">lib/llm</code> (<code className="rounded bg-ink-100 px-1">chat</code>, <code className="rounded bg-ink-100 px-1">chatStream</code>, <code className="rounded bg-ink-100 px-1">embed</code>); nothing else imports a model SDK.
+          Chat and embeddings are chosen separately. With <code className="rounded bg-ink-100 px-1">auto</code>, Azure OpenAI is used when configured, then OpenAI, then Anthropic for chat, and Azure then OpenAI for embeddings. Anthropic has no embeddings API.
+          The adapter returns usage in one shape for every provider, and every call, including failures, is logged in a <code className="rounded bg-ink-100 px-1">finally</code> block, so spend can&rsquo;t go unmetered.
         </p>
         {active ? (
           <p className="rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-ink-800">
@@ -73,7 +73,7 @@ export default function ArchitecturePage() {
 
       <section aria-labelledby="cost" className="card space-y-3 p-6">
         <h2 id="cost" className="text-xl font-semibold text-ink-900">How cost is calculated</h2>
-        <p className="leading-relaxed text-ink-700">Cost comes from the token counts the provider actually returns, priced from one file, <code className="rounded bg-neutral-100 px-1">config/pricing.json</code>. A missing price throws instead of costing $0, and the dashboard warns while any price in use is 0.</p>
+        <p className="leading-relaxed text-ink-700">Cost comes from the token counts the provider actually returns, priced from one file, <code className="rounded bg-ink-100 px-1">config/pricing.json</code>. A missing price throws instead of costing $0, and the dashboard warns while any price in use is 0.</p>
         <pre className="overflow-x-auto rounded-xl bg-ink-900 p-4 font-mono text-xs leading-relaxed text-ink-100">{COST_FORMULA}</pre>
       </section>
 

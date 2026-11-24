@@ -24,8 +24,8 @@ export function FilterBar({ filters, preset, agencies, useCases, models, showSim
   const select = (label: string, value: string | undefined, options: Option[], key: "agency" | "useCase" | "model") => (
     <label className="grid gap-1 text-xs" style={{ color: "var(--viz-text-2)" }}>{label}
       <select value={value ?? ""} onChange={(e) => onChange({ [key]: e.target.value || undefined })} className={field} style={style}>
-        <option value="" style={{ color: "#0b0b0b" }}>All</option>
-        {options.map((o) => <option key={o.value} value={o.value} style={{ color: "#0b0b0b" }}>{o.label}</option>)}
+        <option value="">All</option>
+        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </label>
   );
@@ -48,7 +48,7 @@ export function FilterBar({ filters, preset, agencies, useCases, models, showSim
         Include simulated traffic
       </label>
       {showSimulatedBadge && (
-        <span className="chip mb-1.5 whitespace-nowrap !border-brand-200 !bg-brand-50 !text-brand-800">Includes simulated traffic</span>
+        <span className="chip mb-1.5 whitespace-nowrap !border-brand-200 !bg-brand-50 text-brand-800">Includes simulated traffic</span>
       )}
       <a href={`/api/calls${filtersToQuery(filters, { format: "csv" })}`} download className="btn btn-secondary ml-auto !px-4 !py-2" style={style}>
         <Download size={14} aria-hidden /> Export CSV

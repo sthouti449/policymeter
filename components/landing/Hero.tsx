@@ -46,7 +46,7 @@ export function Hero() {
         <span className="chip"><span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden /> Independent proof of concept &middot; public documents only</span>
         <h1 className="mt-5 text-4xl font-semibold leading-[1.08] text-ink-900 sm:text-5xl lg:text-[3.4rem]">
           AI answers you can trust,{" "}
-          <span className="bg-gradient-to-r from-brand-500 to-brand-800 bg-clip-text text-transparent">with costs you can see.</span>
+          <span className="grad-text">with costs you can see.</span>
         </h1>
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-600">
           Ask questions about Virginia AI policy and get cited answers. When the documents don&rsquo;t cover it, it says so. Every model call is metered by agency and use case.

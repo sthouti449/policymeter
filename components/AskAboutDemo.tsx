@@ -58,10 +58,10 @@ export function AskAboutDemo() {
       {open && (
         <section role="dialog" aria-label="Ask about this demo" onKeyDown={(e) => e.key === "Escape" && close()}
           className="card fixed inset-x-2 bottom-2 z-40 flex max-h-[80vh] flex-col overflow-hidden shadow-2xl sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[24rem]">
-          <header className="flex items-center justify-between bg-gradient-to-br from-brand-700 to-ink-900 px-4 py-3.5 text-white">
+          <header className="flex items-center justify-between bg-gradient-to-br from-brand-700 to-[#0e2a30] px-4 py-3.5 text-white">
             <div>
               <h2 className="font-semibold">Ask about this demo</h2>
-              <p className="text-xs text-brand-100">Architecture, cost metering and the builder&rsquo;s background.</p>
+              <p className="text-xs text-white/75">Architecture, cost metering and the builder&rsquo;s background.</p>
             </div>
             <button onClick={close} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15"><X size={18} aria-hidden /></button>
           </header>

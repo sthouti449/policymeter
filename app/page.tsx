@@ -60,14 +60,14 @@ export default async function Home() {
       <Role source={mapping} />
 
       <section className="mx-auto max-w-7xl px-4 pb-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink-900 via-brand-900 to-brand-700 px-6 py-12 text-center sm:px-12">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0e2a30] via-brand-900 to-brand-700 px-6 py-12 text-center sm:px-12">
           <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-400/20 blur-3xl" aria-hidden />
           <h2 className="text-2xl font-semibold text-white sm:text-3xl">See how it holds up</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-100 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
             The targets were set before the build. The scorecard, the architecture and the production path are all on the record.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link href="/evals" className="btn bg-white text-brand-800 hover:bg-brand-50">See the eval results</Link>
+            <Link href="/evals" className="btn btn-light">See the eval results</Link>
             <Link href="/architecture" className="btn border border-white/30 text-white hover:bg-white/10">Read the architecture</Link>
           </div>
         </div>
