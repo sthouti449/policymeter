@@ -2,6 +2,7 @@ import "server-only";
 import { getSupabase } from "@/lib/db/supabase";
 import { getEnv } from "@/lib/env";
 import { embed, type CallMeta } from "@/lib/llm";
+import { computeCost } from "@/lib/metering/cost";
 import { rrf } from "./fuse";
 
 export interface RetrievedChunk {
@@ -19,7 +20,7 @@ export interface RetrievedChunk {
 export interface Retrieval {
   chunks: RetrievedChunk[]; // best first, at most RAG_MATCH_COUNT
   topSimilarity: number; // highest cosine similarity among ALL candidates
-  embedCostTokens: number;
+  embedCostUsd: number; // what the question embedding cost, same math as the llm_calls row
 }
 
 type Row = {
@@ -88,5 +89,5 @@ export async function retrieve(question: string, corpus: "policy" | "about", met
   }
 
   const chunks = order.slice(0, env.RAG_MATCH_COUNT).flatMap((id) => (found.has(id) ? [found.get(id)!] : []));
-  return { chunks, topSimilarity, embedCostTokens: emb.usage.inputTokens };
+  return { chunks, topSimilarity, embedCostUsd: computeCost(emb.usage, emb.model) };
 }

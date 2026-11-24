@@ -28,6 +28,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <footer className="border-t px-4 py-4 text-center text-xs text-neutral-500">
+          Independent demo. Not affiliated with or endorsed by VITA or the Commonwealth of Virginia. Built by{" "}
+          {process.env.NEXT_PUBLIC_BUILDER_NAME ?? "the builder"}.
+        </footer>
       </body>
     </html>
   );
