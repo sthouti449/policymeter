@@ -50,6 +50,7 @@ export const envSchema = z.object({
   EMBEDDING_DIMENSIONS: num(1536),
   RAG_MATCH_COUNT: num(6),
   RAG_MIN_SIMILARITY: num(0.3),
+  RAG_HYBRID: z.enum(["true", "false"]).default("true"),
 });
 
 export type Env = z.infer<typeof envSchema>;

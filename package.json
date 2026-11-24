@@ -9,11 +9,12 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "ingest": "tsx scripts/ingest.ts",
-    "ingest:about": "tsx scripts/ingest-about.ts",
-    "seed": "tsx scripts/seed-traffic.ts",
-    "check:metering": "tsx scripts/check-metering.ts",
-    "eval": "tsx scripts/run-evals.ts"
+    "ingest": "tsx --conditions=react-server scripts/ingest.ts",
+    "ingest:about": "tsx --conditions=react-server scripts/ingest-about.ts",
+    "seed": "tsx --conditions=react-server scripts/seed-traffic.ts",
+    "check:metering": "tsx --conditions=react-server scripts/check-metering.ts",
+    "eval": "tsx --conditions=react-server scripts/run-evals.ts",
+    "try-retrieve": "tsx --conditions=react-server scripts/try-retrieve.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.13.0",
