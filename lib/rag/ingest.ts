@@ -24,7 +24,7 @@ export interface IngestResult {
  * skipped, but the metadata (status, replaced_by...) is always refreshed, so a
  * status change in the manifest never costs an embedding call.
  */
-export async function ingestDocument(doc: ManifestDoc): Promise<IngestResult> {
+export async function ingestDocument(doc: ManifestDoc, opts: { force?: boolean } = {}): Promise<IngestResult> {
   const result: IngestResult = { docId: doc.doc_id, outcome: "failed", pages: 0, chunks: 0, tokens: 0, costUsd: 0, warnings: [] };
   const db = getSupabase();
 
@@ -44,7 +44,8 @@ export async function ingestDocument(doc: ManifestDoc): Promise<IngestResult> {
     .single();
   if (error || !row) throw new Error(`documents upsert failed: ${error?.message}`);
 
-  if (row.file_hash === hash) {
+  // --force re-embeds even when the file is unchanged (needed when HOW we embed changes, not the file).
+  if (!opts.force && row.file_hash === hash) {
     const { count } = await db.from("chunks").select("id", { count: "exact", head: true }).eq("document_id", row.id);
     if (count) return { ...result, outcome: "skipped", pages: row.page_count ?? 0, chunks: count };
   }
@@ -63,7 +64,7 @@ export async function ingestDocument(doc: ManifestDoc): Promise<IngestResult> {
   }
 
   const stored = await replaceChunks({
-    documentId: row.id, corpus: "policy", chunks, hash, pageCount: pages.length,
+    documentId: row.id, corpus: "policy", chunks, hash, pageCount: pages.length, embedTitle: doc.title,
     meta: { requestId: randomUUID(), agency: "VITA", useCase: "ingestion" },
   });
   return { ...result, outcome: "ingested", chunks: chunks.length, tokens: stored.tokens, costUsd: stored.costUsd };

@@ -66,6 +66,6 @@ Add to `.gitignore` (Claude Code will create it in Stage 0; check it includes): 
 | `DeploymentNotFound` | Deployment name in env doesn't match Azure | Copy the exact deployment name from Azure AI Foundry |
 | Cost shows $0.0000 | Price missing or 0 in `pricing.json`, or pricing key mismatch | Check the banner; match `*_PRICING_KEY` to a key in `pricing.json` |
 | Every API call returns 500 or 503 in production | `IP_HASH_SALT` missing, still the example value, or under 16 characters | Set a real random value in Vercel and redeploy |
-| Every question refused | Threshold too high or embeddings model changed | Run `scripts/try-retrieve.ts`; lower `RAG_MIN_SIMILARITY` to 0.25; re-ingest if the model changed |
+| Every question refused | Threshold too high or embeddings model changed | Run `scripts/try-retrieve.ts`; run `npm run calibrate`; lower `RAG_MIN_SIMILARITY` only if in-scope questions are being refused; re-ingest if the model changed |
 | Vercel function timeout | Long stream or eval run | Set `maxDuration = 60` on those routes |
 | 429 immediately | Daily cap reached (including seeded calls?) | Seeded rows are simulated and excluded from the cap; check `dailyCap.ts` filters `simulated = false` |

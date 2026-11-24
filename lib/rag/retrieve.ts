@@ -4,6 +4,7 @@ import { getEnv } from "@/lib/env";
 import { embed, type CallMeta } from "@/lib/llm";
 import { computeCost } from "@/lib/metering/cost";
 import { rrf } from "./fuse";
+import { toKeywordQuery } from "./keyword";
 
 export interface RetrievedChunk {
   chunkId: number;
@@ -74,7 +75,7 @@ export async function retrieve(question: string, corpus: "policy" | "about", met
   let order = vectorIds;
   if (env.RAG_HYBRID === "true") {
     const { data: kwRows, error: kwErr } = await db.rpc("keyword_chunks", {
-      query_text: question, match_corpus: corpus, match_count: CANDIDATES,
+      query_text: toKeywordQuery(question), match_corpus: corpus, match_count: CANDIDATES,
     });
     if (kwErr) throw new Error(`keyword_chunks failed: ${kwErr.message}`);
     const kwIds = (kwRows as { chunk_id: number }[]).map((r) => r.chunk_id);

@@ -34,6 +34,11 @@ export const envSchema = z.object({
   ANTHROPIC_MODEL_FAST: str,
   ANTHROPIC_MODEL_SMART: str,
   ANTHROPIC_EFFORT: z.enum(["low", "medium", "high"]).default("low"),
+  // Hidden thinking uses the max_tokens budget. The fast tier answers in 700 tokens, so it must not think:
+  // with thinking on, Haiku 5.5 once spent all 700 tokens thinking and returned a blank answer.
+  // The smart tier (the judge) is a model that REJECTS "disabled", so it uses its own default.
+  ANTHROPIC_THINKING_FAST: z.enum(["disabled", "adaptive", "omit"]).default("disabled"),
+  ANTHROPIC_THINKING_SMART: z.enum(["disabled", "adaptive", "omit"]).default("omit"),
 
   SUPABASE_URL: str,
   SUPABASE_SERVICE_ROLE_KEY: str,
@@ -50,7 +55,7 @@ export const envSchema = z.object({
 
   EMBEDDING_DIMENSIONS: num(1536),
   RAG_MATCH_COUNT: num(6),
-  RAG_MIN_SIMILARITY: num(0.3),
+  RAG_MIN_SIMILARITY: num(0.42), // calibrated with npm run calibrate (see README)
   RAG_HYBRID: z.enum(["true", "false"]).default("true"),
 });
 

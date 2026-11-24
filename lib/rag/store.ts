@@ -2,6 +2,7 @@ import "server-only";
 import { getSupabase } from "@/lib/db/supabase";
 import { embed, type CallMeta } from "@/lib/llm";
 import { computeCost } from "@/lib/metering/cost";
+import { embeddingText } from "./embedtext";
 
 export interface StorableChunk { index: number; page: number | null; content: string; tokenCount: number }
 
@@ -19,6 +20,7 @@ export async function replaceChunks(a: {
   chunks: StorableChunk[];
   hash: string;
   pageCount: number | null;
+  embedTitle?: string; // document title, put in front of each chunk before embedding
   meta: CallMeta;
 }): Promise<{ tokens: number; costUsd: number }> {
   const db = getSupabase();
@@ -27,7 +29,8 @@ export async function replaceChunks(a: {
   let tokens = 0;
   let costUsd = 0;
   for (let i = 0; i < a.chunks.length; i += EMBED_BATCH) {
-    const res = await embed(a.chunks.slice(i, i + EMBED_BATCH).map((c) => c.content), a.meta);
+    // Embed "title + chunk" (see embedtext.ts); the stored and displayed text stays the plain chunk.
+    const res = await embed(a.chunks.slice(i, i + EMBED_BATCH).map((c) => embeddingText(a.embedTitle, c.content)), a.meta);
     vectors.push(...res.vectors);
     model = res.model; // pricing key, e.g. "openai:text-embedding-3-small"
     tokens += res.usage.inputTokens;

@@ -3,6 +3,7 @@ import { getEnv, type Provider } from "@/lib/env";
 import "@/lib/metering/install"; // registers logCall on the hook (Stage 1)
 import { azureProvider } from "./azure";
 import { anthropicProvider } from "./anthropic";
+import { assertNonEmpty } from "./empty";
 import { emit } from "./hook";
 import { openaiProvider } from "./openai";
 import { resolveChat, resolveEmbed } from "./resolve";
@@ -38,8 +39,9 @@ export async function chat(args: ChatArgs): Promise<ChatResult> {
   let usage = ZERO_USAGE;
   let failure: unknown;
   try {
-    const res = await impls(model.provider).chat({ messages: args.messages, model, maxTokens: args.maxTokens });
-    usage = res.usage;
+    const res = await impls(model.provider).chat({ messages: args.messages, model, maxTokens: args.maxTokens, tier: args.tier });
+    usage = res.usage; // recorded even if the check below throws: those tokens were billed
+    assertNonEmpty(res.text, usage.outputTokens, args.maxTokens);
     return { text: res.text, usage, model: model.pricingKey, provider: model.provider, latencyMs: Math.round(performance.now() - start) };
   } catch (err) {
     failure = err;
@@ -59,7 +61,7 @@ export async function* chatStream(args: ChatArgs): AsyncGenerator<StreamEvent> {
   let failure: unknown = undefined;
   let finished = false;
   try {
-    for await (const ev of impls(model.provider).stream({ messages: args.messages, model, maxTokens: args.maxTokens })) {
+    for await (const ev of impls(model.provider).stream({ messages: args.messages, model, maxTokens: args.maxTokens, tier: args.tier })) {
       if ("delta" in ev) {
         ttftMs ??= Math.round(performance.now() - start); // time to first token
         text += ev.delta;
@@ -68,6 +70,7 @@ export async function* chatStream(args: ChatArgs): AsyncGenerator<StreamEvent> {
         usage = ev.usage;
       }
     }
+    assertNonEmpty(text, usage.outputTokens, args.maxTokens); // a blank stream is a failure, not an answer
     finished = true;
     yield { done: true, text, usage, model: model.pricingKey, provider: model.provider, latencyMs: Math.round(performance.now() - start), ttftMs };
   } catch (err) {

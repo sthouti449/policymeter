@@ -6,9 +6,12 @@ import { loadManifest, sourcePath } from "@/lib/rag/manifest";
 
 // Usage: npm run ingest            (all documents)
 //        npm run ingest -- eo22 ed6  (only these doc_ids)
+//        npm run ingest -- --force   (re-embed everything, even unchanged files)
 async function main() {
   getEnv(); // fail fast with a readable message if keys are missing
-  const only = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  const force = args.includes("--force"); // re-embed even unchanged files (when the embedding method changed)
+  const only = args.filter((a) => !a.startsWith("--"));
   const docs = loadManifest().filter((d) => !only.length || only.includes(d.doc_id));
   if (!docs.length) throw new Error(`No manifest documents match: ${only.join(", ")}`);
 
@@ -26,7 +29,7 @@ async function main() {
   for (const doc of present) {
     process.stdout.write(`${doc.doc_id} ... `);
     try {
-      const r = await ingestDocument(doc);
+      const r = await ingestDocument(doc, { force });
       results.push(r);
       console.log(r.outcome);
       for (const w of r.warnings) console.warn(`  WARNING: ${w}`);

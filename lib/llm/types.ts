@@ -71,7 +71,7 @@ export interface CallRecord {
 
 /** What each provider file implements. index.ts adds timing, errors and the hook. */
 export interface ProviderImpl {
-  chat(a: { messages: Msg[]; model: ResolvedModel; maxTokens: number }): Promise<{ text: string; usage: Usage }>;
-  stream(a: { messages: Msg[]; model: ResolvedModel; maxTokens: number }): AsyncGenerator<{ delta: string } | { usage: Usage }>;
+  chat(a: { messages: Msg[]; model: ResolvedModel; maxTokens: number; tier: Tier }): Promise<{ text: string; usage: Usage }>;
+  stream(a: { messages: Msg[]; model: ResolvedModel; maxTokens: number; tier: Tier }): AsyncGenerator<{ delta: string } | { usage: Usage }>;
   embed(a: { texts: string[]; model: ResolvedModel }): Promise<{ vectors: number[][]; usage: Usage }>;
 }

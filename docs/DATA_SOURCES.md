@@ -28,3 +28,9 @@ Checked on 2026-11-23. Links on state websites move; if one fails, use the "Wher
 **B. Scanned pages.** If a PDF yields little text (`pdf-parse` returns under 200 characters per page), the ingest script logs a warning. Re-download a text version or skip it; don't add OCR for this demo.
 
 **C. Re-ingesting.** The ingest script deletes and replaces a document's chunks when the file hash changes, and records `ingested_at`. The UI shows "Documents last ingested: {date}".
+
+## Notes added while loading the documents (November 2026)
+- **Direct download links found on the official pages:** EO 22 and ED-6 (governor.virginia.gov, `/media/governorvirginiagov/governor-of-virginia/pdf/eo/` and `/ed/`), EA-225 (`EA-Solutions-Artificial-Intelligence-Standard.pdf` on vita.virginia.gov) and EA400. The original links for EO 30 and the 2024 policy standard now return 404.
+- **VITA AI FAQs:** the page hides every answer in a collapsed accordion, so printing it as-is saves only the questions. Open every panel first (remove the `hidden` attributes from `<main>`), then print to PDF. The first attempt kept 944 tokens of text; the expanded copy keeps about 5,850.
+- **AI Registry Job Aid (v1.1, October 2026)** was added to the manifest as `ai-registry-job-aid`. About two thirds of its pages are screenshots with almost no text, so it adds little to retrieval (there is no OCR in this demo).
+- **Document 3 (2024 policy standard):** EA400's version history lists only EA400's own versions (1.0 on 5/26/2024, 1.1 on 6/30/2026) and does not say it replaces the January 2024 standard, so it stays `current` in the manifest unless a source says otherwise.

@@ -77,7 +77,7 @@ describe("OpenAI-compatible adapter", () => {
       { choices: [], usage: { prompt_tokens: 30, completion_tokens: 2, prompt_tokens_details: { cached_tokens: 10 } } },
     ]));
     const events = [];
-    for await (const e of impl.stream({ messages, model, maxTokens: 10 })) events.push(e);
+    for await (const e of impl.stream({ messages, model, maxTokens: 10, tier: "fast" })) events.push(e);
     expect(events.filter((e) => "delta" in e)).toHaveLength(2);
     expect(events.at(-1)).toEqual({ usage: { inputTokens: 30, cachedInputTokens: 10, cacheWriteTokens: 0, outputTokens: 2, estimated: false } });
   });
@@ -85,13 +85,13 @@ describe("OpenAI-compatible adapter", () => {
   it("falls back to an estimate when a stream never reports usage", async () => {
     const impl = makeOpenAICompat(fakeClient([{ choices: [{ delta: { content: "OK" } }] }]));
     const events = [];
-    for await (const e of impl.stream({ messages, model, maxTokens: 10 })) events.push(e);
+    for await (const e of impl.stream({ messages, model, maxTokens: 10, tier: "fast" })) events.push(e);
     expect((events.at(-1) as { usage: { estimated: boolean } }).usage.estimated).toBe(true);
   });
 
   it("normalises chat and embedding usage", async () => {
     const impl = makeOpenAICompat(fakeClient([]));
-    expect((await impl.chat({ messages, model, maxTokens: 10 })).usage.inputTokens).toBe(12);
+    expect((await impl.chat({ messages, model, maxTokens: 10, tier: "fast" })).usage.inputTokens).toBe(12);
     const emb = await impl.embed({ texts: ["x"], model });
     expect(emb.vectors).toEqual([[0.1, 0.2]]);
     expect(emb.usage).toMatchObject({ inputTokens: 7, outputTokens: 0 });

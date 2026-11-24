@@ -98,7 +98,7 @@ _No real run has been recorded yet._
 
 ## Limitations
 
-- Single-turn retrieval quality depends on the similarity threshold (`RAG_MIN_SIMILARITY`, default 0.30), which is a starting guess to tune on the golden set.
+- Refusals depend on a similarity cutoff (`RAG_MIN_SIMILARITY`, now 0.42, chosen with `npm run calibrate`). On the 16-question golden set out-of-scope questions peaked at 0.39 and in-scope ones started at 0.47, a narrow gap from a small sample. Re-run `npm run calibrate` after adding documents.
 - PDFs with no text layer are not read (no OCR).
 - No user accounts, and all documents are public: there is no per-agency document isolation.
 - Agency tags are simulated labels for cost allocation. Seeded traffic is clearly labelled and can be removed.

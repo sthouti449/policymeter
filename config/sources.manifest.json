@@ -59,7 +59,7 @@
       "issuer": "Office of the Governor (Youngkin)",
       "published": "2024-01-18",
       "status": "rescinded",
-      "replaced_by": "Executive Order 22 (Sept 18, 2026); policies published under EO 30 remain in effect until the new AI Task Force replaces them",
+      "replaced_by": "Executive Order 22 (Sept 18, 2026); policies, standards and guidelines published under EO 30 remain in effect unless or until replaced by a future executive or agency action",
       "url": "https://www.governor.virginia.gov/media/governorvirginiagov/governor-of-virginia/pdf/eo/EO-30.pdf"
     },
     {
@@ -71,6 +71,16 @@
       "status": "current",
       "replaced_by": null,
       "url": "https://www.vita.virginia.gov/policy--governance/governance/artificial-intelligence/ai-faqs/"
+    },
+    {
+      "doc_id": "ai-registry-job-aid",
+      "file": "ai-registry-job-aid.pdf",
+      "title": "AI Registry Job Aid (v1.1)",
+      "issuer": "VITA",
+      "published": null,
+      "status": "current",
+      "replaced_by": null,
+      "url": "https://www.vita.virginia.gov/media/vitavirginiagov/it-governance/ea/pdf/AI-Registry_Job-Aid_v1-1_VITA_October-2026.pdf"
     },
     {
       "doc_id": "aia-template",
