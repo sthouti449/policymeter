@@ -3,7 +3,7 @@
 <!-- EDIT: replace the left-column phrases with the exact wording from the VITA job description. -->
 
 ## Production chatbots and retrieval-augmented generation on Azure OpenAI
-The Policy Assistant is a working RAG chatbot on Azure OpenAI with cited answers, refusal when the documents are silent, superseded-document warnings, and an evaluation suite with measured retrieval, citation and groundedness scores.
+The Policy Assistant is a working RAG chatbot with cited answers, built Azure-first behind a provider adapter (this deployment runs Claude for chat and OpenAI for embeddings; the Azure OpenAI path is built and unit-tested but not run live), refusal when the documents are silent, superseded-document warnings, and an evaluation suite with measured retrieval, citation and groundedness scores.
 
 ## Token economics, tagging and cost allocation
 Every model call, including ingestion, evaluations and this reviewer assistant, is logged with tokens, cost, agency tag and use case. The dashboard shows spend by agency, use case and model, cost per answered question, a month-end forecast, a model what-if comparison and a chargeback CSV export.

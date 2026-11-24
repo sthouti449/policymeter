@@ -19,7 +19,10 @@ Each call's cost is computed from the token usage the provider actually returns,
 Every call carries an agency tag and a use-case tag. The dashboard shows spend by agency, use case and model, and exports a chargeback-ready CSV. Each agency has a monthly budget. An alert fires once when an agency crosses 80% and again at 100%, and it can post to a Teams or Slack webhook. A month-end forecast uses the run rate. A model what-if panel re-prices the same logged tokens on another model, which turns model selection into a cost decision with numbers behind it.
 
 ## Why Azure OpenAI first
-Azure OpenAI is the stack named in the role, and it keeps data inside a Microsoft tenant that state agencies already govern. The app uses a provider adapter: Azure OpenAI when configured, with OpenAI or Anthropic Claude as fallbacks. The cost model and logging are identical across providers, so switching providers is a configuration change, not a rewrite.
+Azure OpenAI is the stack named in the role, and it keeps data inside a Microsoft tenant that state agencies already govern. The app is designed Azure-first: the provider adapter picks Azure OpenAI when it is configured, with OpenAI or Anthropic Claude as fallbacks. The cost model and logging are identical across providers, so switching providers is a configuration change, not a rewrite.
+
+## What this deployment actually runs on
+This running demo does not use Azure OpenAI. Chat runs on Anthropic Claude: Claude Haiku 5.5 for the assistant, query rewriting and this reviewer assistant, and Claude Sonnet 5.5 as the evaluation judge. Embeddings run on OpenAI text-embedding-3-small, because Anthropic has no embeddings API. The Azure OpenAI path is built into the adapter and covered by unit tests with recorded response payloads, but it has not been run against a live Azure resource. Moving to Azure would mean setting the Azure environment variables and prices; no application code changes.
 
 ## Guardrails
 The demo enforces a global daily spending cap and a per-IP rate limit before any model call. It redacts emails, phone numbers and SSN-like patterns from stored questions and keeps at most 500 characters. API keys stay on the server. Every answer shows an AI-assistance disclaimer, which mirrors the disclaimer requirement in the Commonwealth's AI policy standard.
@@ -34,4 +37,4 @@ In production: Entra ID single sign-on with per-agency roles; documents in each 
 PolicyMeter was run as a time-boxed POC: four days to build and one day to evaluate, with success criteria set before coding (retrieval hit rate of at least 85%, citations on at least 95% of in-scope answers, groundedness of at least 4.2 out of 5, all out-of-scope questions refused, and a measured cost per answered question). The scorecard on the Architecture page records the results and an adopt, extend or stop decision.
 
 ## Tech stack
-Next.js 15 with TypeScript, Tailwind and Recharts; Supabase Postgres with pgvector; Azure OpenAI, with OpenAI and Anthropic fallbacks; deployed on Vercel. Built with Claude Code using staged prompts.
+Next.js 15 with TypeScript, Tailwind and Recharts; Supabase Postgres with pgvector; a provider adapter supporting Azure OpenAI, OpenAI and Anthropic (this deployment runs Claude for chat and OpenAI for embeddings); deployed on Vercel. Built with Claude Code using staged prompts.

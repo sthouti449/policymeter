@@ -2,7 +2,7 @@
 
 | Field | Entry |
 |---|---|
-| **Objective** | Show that an Azure OpenAI RAG assistant can answer agency staff questions about Virginia AI policy with cited, grounded answers, while metering cost per agency and use case well enough to support chargeback and budget control. |
+| **Objective** | Show that a RAG assistant, built Azure-first behind a provider adapter (this POC runs Claude for chat and OpenAI for embeddings), can answer agency staff questions about Virginia AI policy with cited, grounded answers, while metering cost per agency and use case well enough to support chargeback and budget control. |
 | **Time box** | 4 days build + 1 day evaluation (started: ____ , ended: ____ ) |
 | **Scope** | 9 public policy documents; 6 simulated agency tags; single-turn and follow-up questions; no user accounts |
 | **Owner** | Suresh Thouti |

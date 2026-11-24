@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AskAboutDemo } from "@/components/AskAboutDemo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <AskAboutDemo />
         <footer className="border-t px-4 py-4 text-center text-xs text-neutral-500">
           Independent demo. Not affiliated with or endorsed by VITA or the Commonwealth of Virginia. Built by{" "}
           {process.env.NEXT_PUBLIC_BUILDER_NAME ?? "the builder"}.
