@@ -94,7 +94,19 @@ Embeddings are priced on input tokens. All calls for one question share a reques
 
 Run `npm run eval` and record the numbers in `docs/POC_SCORECARD.md` (also shown on `/architecture`). Targets: hit rate at least 85%, citations at least 95%, groundedness at least 4.2 of 5, 100% correct refusals, p50 time to first token at most 4 s, under $0.01 per answered question, and zero unmetered calls.
 
-_No real run has been recorded yet._
+Latest run (24 Nov 2026, 16 questions: 12 in scope, 4 out of scope):
+
+| Target | Result |
+|---|---|
+| Retrieval hit rate ≥ 85% | 92% (11 of 12) |
+| Valid citations ≥ 95% | 100% (12 of 12) |
+| Groundedness ≥ 4.2 of 5 | 4.83 |
+| Correct refusals 100% | 100% (4 of 4) |
+| p50 time to first token ≤ 4 s | 1.0 s |
+| Cost per answered question < $0.01 | $0.0004 |
+| Unmetered calls = 0 | none found internally; not yet compared with provider usage pages |
+
+The one question that still misses retrieval asks which risk framework the AI technology standard uses (EA-225 cites NIST AI 100-1, but that chunk ranks below the top 6). The run is the fifth, with the system tuned in between, so treat the numbers as a tuned result on a small set rather than an independent test. The full write-up is in `docs/POC_SCORECARD.md`.
 
 ## Limitations
 
