@@ -143,6 +143,7 @@
   --viz-axis: #c3c2b7;
   --viz-border: rgba(11, 11, 11, 0.1);
   --viz-track: #e8e7e1;
+  --viz-brand: #007c91;
   --viz-series-1: #2a78d6;
   --viz-series-2: #eb6834;
   --viz-series-3: #1baf7a;
@@ -183,48 +184,48 @@
 
 /* Visible keyboard focus everywhere (WCAG 2.4.7). */
 :focus-visible {
-  outline: 2px solid #2a78d6;
+  outline: 2px solid #007c91;
   outline-offset: 2px;
 }
 
 /* ======================================================================
    PolicyMeter design system
-   Palette: "brand" (a trustworthy blue) and "ink" (a cool navy-grey for text and surfaces).
+   Palette: "brand" (teal, taken from VITA's public stylesheet) and "ink" (a cool navy-grey for text and surfaces).
    Text colours were chosen for contrast: ink-600 and darker pass 4.5:1 on white; brand-600 and
    darker pass 4.5:1 on white; white text passes on brand-600 and darker.
    ====================================================================== */
 @theme {
-  --color-brand-50: #eef4ff;
-  --color-brand-100: #dce8ff;
-  --color-brand-200: #bfd5ff;
-  --color-brand-300: #93b6ff;
-  --color-brand-400: #5f90f5;
-  --color-brand-500: #3a6fe6;
-  --color-brand-600: #2554d6;
-  --color-brand-700: #1c43b0;
-  --color-brand-800: #1a3a8c;
-  --color-brand-900: #142a63;
+  --color-brand-50: #ebf8fa;
+  --color-brand-100: #d1eef3;
+  --color-brand-200: #a5dbe4;
+  --color-brand-300: #66bccb;
+  --color-brand-400: #2f9cb0;
+  --color-brand-500: #007c91;
+  --color-brand-600: #00586f;
+  --color-brand-700: #00465a;
+  --color-brand-800: #003f4a;
+  --color-brand-900: #00343d;
 
-  --color-ink-50: #f6f8fb;
-  --color-ink-100: #eceff5;
-  --color-ink-200: #dde2ec;
-  --color-ink-300: #bcc4d4;
-  --color-ink-400: #8b96ac;
-  --color-ink-500: #5f6c86;
-  --color-ink-600: #435069;
-  --color-ink-700: #2c3a54;
-  --color-ink-800: #19253d;
-  --color-ink-900: #0d172c;
+  --color-ink-50: #f5f8f8;
+  --color-ink-100: #ecf1f2;
+  --color-ink-200: #d9e2e4;
+  --color-ink-300: #b5c5c9;
+  --color-ink-400: #8aa0a5;
+  --color-ink-500: #5a7379;
+  --color-ink-600: #435e65;
+  --color-ink-700: #2d4a51;
+  --color-ink-800: #17363d;
+  --color-ink-900: #0e2a30;
 
-  --color-mint-100: #d6f4ee;
-  --color-mint-600: #0b7a6e;
+  --color-mint-100: #d5fbf3;
+  --color-mint-600: #00776a;
 }
 
 @layer base {
   html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-ink-50);
-    background-image: radial-gradient(900px 380px at 50% -140px, rgba(58, 111, 230, 0.16), transparent 70%);
+    background-image: radial-gradient(900px 380px at 50% -140px, rgba(0, 124, 145, 0.15), transparent 70%);
     background-repeat: no-repeat;
     color: var(--color-ink-900);
   }
@@ -243,7 +244,7 @@
   .card-hover:hover {
     transform: translateY(-2px);
     border-color: var(--color-brand-200);
-    box-shadow: 0 2px 4px rgba(13, 23, 44, 0.05), 0 16px 36px rgba(37, 84, 214, 0.14);
+    box-shadow: 0 2px 4px rgba(13, 23, 44, 0.05), 0 16px 36px rgba(0, 88, 111, 0.16);
   }
 
   .btn {

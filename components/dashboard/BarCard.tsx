@@ -44,7 +44,7 @@ export function BarCard({ title, keyLabel, rows, labelOf = (k) => k }: Props) {
             <YAxis type="category" dataKey="name" width={130} tick={ink} stroke="var(--viz-axis)" tickLine={false} interval={0} />
             <Tooltip cursor={{ fill: "var(--viz-grid)", opacity: 0.4 }} content={<Tip keyLabel={keyLabel} />} />
             {/* Thin bar, 4px rounded data end, square at the baseline. */}
-            <Bar dataKey="costUsd" fill="var(--viz-series-1)" barSize={16} radius={[0, 4, 4, 0]} isAnimationActive={false}>
+            <Bar dataKey="costUsd" fill="var(--viz-brand)" barSize={16} radius={[0, 4, 4, 0]} isAnimationActive={false}>
               <LabelList dataKey="costUsd" position="right" formatter={(v: unknown) => formatCost(Number(v))} style={{ fill: "var(--viz-text-1)", fontSize: 12 }} />
             </Bar>
           </BarChart>

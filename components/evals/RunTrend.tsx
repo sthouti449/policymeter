@@ -26,8 +26,8 @@ export function RunTrend({ runs, selectedId }: { runs: RunRow[]; selectedId: str
                 label={{ value: "Score (1-5)", angle: -90, position: "insideLeft", offset: 8, ...ink }} />
               <Tooltip formatter={(v) => Number(v).toFixed(2)} labelFormatter={(_, p) => p?.[0]?.payload?.label ?? ""} contentStyle={{ background: "var(--viz-surface)", border: "1px solid var(--viz-border)", borderRadius: 8 }} />
               {/* 2px line, round joins, 8px dots with a surface-coloured ring. */}
-              <Line type="monotone" dataKey="groundedness" name="Groundedness" stroke="var(--viz-series-1)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round"
-                dot={{ r: 4, fill: "var(--viz-series-1)", stroke: "var(--viz-surface)", strokeWidth: 2 }} isAnimationActive={false} />
+              <Line type="monotone" dataKey="groundedness" name="Groundedness" stroke="var(--viz-brand)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round"
+                dot={{ r: 4, fill: "var(--viz-brand)", stroke: "var(--viz-surface)", strokeWidth: 2 }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>

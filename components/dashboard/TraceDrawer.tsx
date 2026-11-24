@@ -68,7 +68,7 @@ export function TraceDrawer({ requestId, onClose }: { requestId: string; onClose
                     <p>{c.title} <span style={{ color: "var(--viz-text-2)" }}>&middot; {c.page != null ? `p.${c.page}` : "no page"} &middot; {c.status}</span></p>
                     <div className="mt-1 flex items-center gap-2 text-xs" style={{ color: "var(--viz-text-2)" }}>
                       <div className="h-1.5 w-28 overflow-hidden rounded-full" style={{ background: "var(--viz-track)" }}>
-                        <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(1, c.similarity)) * 100}%`, background: "var(--viz-series-1)" }} />
+                        <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(1, c.similarity)) * 100}%`, background: "var(--viz-brand)" }} />
                       </div>
                       similarity {c.similarity.toFixed(3)} &middot; {c.usedInPrompt ? "used in the answer prompt" : "below threshold, not used"}
                     </div>

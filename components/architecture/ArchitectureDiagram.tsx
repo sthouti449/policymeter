@@ -4,9 +4,9 @@
 interface BoxProps { x: number; y: number; w: number; h: number; title: string; lines: string[]; tone?: "ui" | "api" | "lib" | "data" }
 
 const TONE = {
-  ui: "fill-sky-50 stroke-sky-300",
-  api: "fill-indigo-50 stroke-indigo-300",
-  lib: "fill-emerald-50 stroke-emerald-300",
+  ui: "fill-brand-50 stroke-brand-300",
+  api: "fill-ink-50 stroke-ink-300",
+  lib: "fill-mint-100 stroke-brand-300",
   data: "fill-amber-50 stroke-amber-300",
 } as const;
 
