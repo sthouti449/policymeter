@@ -35,6 +35,18 @@ export const envSchema = z.object({
   ANTHROPIC_MODEL_SMART: str,
   ANTHROPIC_EFFORT: z.enum(["low", "medium", "high"]).default("low"),
 
+  SUPABASE_URL: str,
+  SUPABASE_SERVICE_ROLE_KEY: str,
+  ALERT_WEBHOOK_URL: str,
+  IP_HASH_SALT: z.string().default("dev-salt-change-me"),
+  ADMIN_TOKEN: str,
+
+  // Spend guardrails. The widget has its own cap so reviewers are never locked out.
+  DAILY_SPEND_CAP_USD: num(2),
+  DEMO_DAILY_SPEND_CAP_USD: num(0.5),
+  RATE_LIMIT_PER_MINUTE: num(8),
+  MAX_QUESTION_CHARS: num(1000),
+
   EMBEDDING_DIMENSIONS: num(1536),
   RAG_MATCH_COUNT: num(6),
   RAG_MIN_SIMILARITY: num(0.3),

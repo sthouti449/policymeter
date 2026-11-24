@@ -4,7 +4,16 @@ export type Tier = "fast" | "smart";
 export interface Msg { role: "system" | "user" | "assistant"; content: string }
 
 /** Who and what a call is for. Stage 1 writes this to llm_calls. */
-export interface CallMeta { requestId: string; agency: string; useCase: string; simulated?: boolean }
+export interface CallMeta {
+  requestId: string;
+  agency: string;
+  useCase: string;
+  simulated?: boolean;
+  // Optional context stored with the row. The question is redacted before storage.
+  question?: string;
+  topSimilarity?: number;
+  retrievedChunkIds?: number[];
+}
 
 /**
  * Normalised usage. inputTokens is the TOTAL prompt size, cached tokens included

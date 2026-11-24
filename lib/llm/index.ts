@@ -1,5 +1,6 @@
 import "server-only";
 import { getEnv, type Provider } from "@/lib/env";
+import "@/lib/metering/install"; // registers logCall on the hook (Stage 1)
 import { azureProvider } from "./azure";
 import { anthropicProvider } from "./anthropic";
 import { emit } from "./hook";

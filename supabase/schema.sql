@@ -100,6 +100,7 @@ create table if not exists llm_calls (
   output_tokens        int not null default 0,
   cost_usd             numeric(12,8) not null default 0,
   latency_ms           int,
+  ttft_ms              int,                      -- time to first token (streamed chats)
   status               text not null default 'ok' check (status in ('ok','error','refused','capped')),
   error_code           text,
   usage_estimated      boolean not null default false,
@@ -121,10 +122,11 @@ create table if not exists alerts (
   period      text not null,                  -- 'YYYY-MM' for budgets, 'YYYY-MM-DD' for daily cap
   level       text not null check (level in ('warning','breached','daily_cap')),
   spend_usd   numeric(12,6) not null,
-  budget_usd  numeric(12,2) not null,
+  budget_usd  numeric(12,6) not null,
   message     text not null,
   webhook_ok  boolean,
-  unique (agency, period, level)              -- each alert fires once per period
+  simulated   boolean not null default false, -- alerts caused by seeded traffic
+  constraint alerts_unique_per_period unique (agency, period, level, simulated) -- fires once per period
 );
 
 -- Per-IP rate limiting (fixed one-minute windows). IPs are stored as SHA-256 hashes.
@@ -184,6 +186,20 @@ create table if not exists eval_results (
   latency_ms       int,
   cost_usd         numeric(12,8)
 );
+
+-- ---------- Spend helpers (see supabase/migrations/001_stage1.sql) ----------
+create or replace function daily_spend(p_since timestamptz, p_scope text)
+returns numeric language sql stable as $
+  select coalesce(sum(cost_usd), 0) from llm_calls
+  where created_at >= p_since and not simulated and use_case not in ('eval-run', 'ingestion')
+    and ((p_scope = 'demo' and agency = 'DEMO') or (p_scope = 'global' and agency <> 'DEMO'));
+$;
+
+create or replace function month_spend(p_agency text, p_since timestamptz, p_include_simulated boolean)
+returns numeric language sql stable as $
+  select coalesce(sum(cost_usd), 0) from llm_calls
+  where agency = p_agency and created_at >= p_since and (p_include_simulated or not simulated);
+$;
 
 -- ---------- Dashboard helper views ----------
 create or replace view v_daily_spend as
