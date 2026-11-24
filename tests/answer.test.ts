@@ -53,7 +53,10 @@ describe("answerPolicyQuestion", () => {
     const { final } = await run("What's the weather in Richmond tomorrow?");
     expect(final).toMatchObject({ refused: true, refusalReason: "low_similarity" });
     expect(final.cost.costUsd).toBeCloseTo(0.00001, 10); // embedding only
-    expect(m.markRefused).toHaveBeenCalledWith(expect.any(String), "low_similarity");
+    // The trace keeps the below-threshold chunk, so you can see which score caused the refusal.
+    expect(m.markRefused).toHaveBeenCalledWith(expect.any(String), "low_similarity", [
+      expect.objectContaining({ docId: "eo30", similarity: 0.1, usedInPrompt: false }),
+    ]);
     expect(m.chatStream).not.toHaveBeenCalled();
   });
 

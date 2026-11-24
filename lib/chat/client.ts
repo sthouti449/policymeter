@@ -42,4 +42,4 @@ export async function sendFeedback(requestId: string, value: 1 | -1): Promise<bo
 
 export const DISCLAIMER = "DISCLAIMER: This output was created with assistance from artificial intelligence.";
 
-export const formatCost = (usd: number) => `$${usd < 1 ? usd.toFixed(4) : usd.toFixed(2)}`;
+export { formatCost } from "@/lib/format";

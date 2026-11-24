@@ -41,6 +41,7 @@ export async function logCall(rec: CallRecord): Promise<void> {
       question_redacted: rec.meta.question ? redactQuestion(rec.meta.question) : null,
       top_similarity: rec.meta.topSimilarity ?? null,
       retrieved_chunk_ids: rec.meta.retrievedChunkIds ?? null,
+      trace: rec.meta.trace ?? null,
     });
     if (error) throw new Error(error.message);
   } catch (err) {

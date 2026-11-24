@@ -60,8 +60,13 @@ export async function* answerPolicyQuestion(a: AnswerArgs): AsyncGenerator<ChatE
   const found = await retrieve(standalone, "policy", meta);
   spent += found.embedCostUsd;
   const usable = found.chunks.filter((c) => c.similarity >= env.RAG_MIN_SIMILARITY);
+  // Every retrieved chunk goes in the trace, including ones below the threshold.
+  const trace = found.chunks.map((c) => ({
+    chunkId: c.chunkId, docId: c.docId, title: c.title, page: c.page, status: c.status,
+    similarity: Math.round(c.similarity * 1000) / 1000, usedInPrompt: c.similarity >= env.RAG_MIN_SIMILARITY,
+  }));
   if (!usable.length) {
-    await markRefused(requestId, "low_similarity");
+    await markRefused(requestId, "low_similarity", trace);
     yield* refusal("low_similarity");
     return;
   }
@@ -82,7 +87,7 @@ export async function* answerPolicyQuestion(a: AnswerArgs): AsyncGenerator<ChatE
     ],
     tier: "fast",
     maxTokens: 700,
-    meta: { ...meta, topSimilarity: found.topSimilarity, retrievedChunkIds: usable.map((c) => c.chunkId) },
+    meta: { ...meta, topSimilarity: found.topSimilarity, retrievedChunkIds: usable.map((c) => c.chunkId), trace },
   })) {
     if ("delta" in ev) {
       firstDeltaMs ??= Math.round(performance.now() - started);

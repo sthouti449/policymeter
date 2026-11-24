@@ -1,5 +1,16 @@
 import type { Provider } from "@/lib/env";
 
+/** One retrieved chunk, as shown in a trace. No chunk text, so rows stay small and private. */
+export interface RetrievalTraceItem {
+  chunkId: number;
+  docId: string;
+  title: string;
+  page: number | null;
+  status: string;
+  similarity: number;
+  usedInPrompt: boolean; // false = retrieved but below the similarity threshold
+}
+
 export type Tier = "fast" | "smart";
 export interface Msg { role: "system" | "user" | "assistant"; content: string }
 
@@ -13,6 +24,7 @@ export interface CallMeta {
   question?: string;
   topSimilarity?: number;
   retrievedChunkIds?: number[];
+  trace?: RetrievalTraceItem[]; // shown in the dashboard Trace drawer
 }
 
 /**

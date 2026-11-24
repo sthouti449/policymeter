@@ -2,16 +2,16 @@ import "server-only";
 import { getSupabase } from "@/lib/db/supabase";
 import { getEnv } from "@/lib/env";
 import { resolveChat } from "@/lib/llm/resolve";
-import type { CallMeta } from "@/lib/llm/types";
+import type { CallMeta, RetrievalTraceItem } from "@/lib/llm/types";
 
 /**
  * Label a question's rows as refused (CLAUDE.md: a refusal costs only the
  * embedding). Rewrite rows keep their own status. Never throws.
  */
-export async function markRefused(requestId: string, reason: string): Promise<void> {
+export async function markRefused(requestId: string, reason: string, trace?: RetrievalTraceItem[]): Promise<void> {
   const { error } = await getSupabase()
     .from("llm_calls")
-    .update({ status: "refused", error_code: reason })
+    .update({ status: "refused", error_code: reason, ...(trace ? { trace } : {}) })
     .eq("request_id", requestId)
     .neq("use_case", "query-rewrite");
   if (error) console.error("markRefused failed:", error.message);
