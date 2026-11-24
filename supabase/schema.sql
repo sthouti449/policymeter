@@ -103,14 +103,14 @@ returns table (
   replaced_by  text,
   url          text
 )
-language sql stable as $
+language sql stable as $$
   select c.id, c.content, c.page,
          1 - (c.embedding <=> query_embedding) as similarity,
          d.doc_id, d.title, d.status, d.replaced_by, d.url
   from chunks c
   join documents d on d.id = c.document_id
   where c.id = any(chunk_ids);
-$;
+$$;
 
 -- ---------- Metering ----------
 create table if not exists llm_calls (
@@ -222,17 +222,17 @@ create table if not exists eval_results (
 
 -- ---------- Spend helpers (see supabase/migrations/001_stage1.sql) ----------
 create or replace function daily_spend(p_since timestamptz, p_scope text)
-returns numeric language sql stable as $
+returns numeric language sql stable as $$
   select coalesce(sum(cost_usd), 0) from llm_calls
   where created_at >= p_since and not simulated and use_case not in ('eval-run', 'ingestion')
     and ((p_scope = 'demo' and agency = 'DEMO') or (p_scope = 'global' and agency <> 'DEMO'));
-$;
+$$;
 
 create or replace function month_spend(p_agency text, p_since timestamptz, p_include_simulated boolean)
-returns numeric language sql stable as $
+returns numeric language sql stable as $$
   select coalesce(sum(cost_usd), 0) from llm_calls
   where agency = p_agency and created_at >= p_since and (p_include_simulated or not simulated);
-$;
+$$;
 
 -- ---------- Dashboard aggregation (see supabase/migrations/003_stage4.sql) ----------
 -- Everything the dashboard's charts and KPI tiles need, aggregated in SQL in one call.
@@ -247,7 +247,7 @@ create or replace function dashboard_metrics(
   p_include_simulated boolean default true
 )
 returns jsonb
-language sql stable as $
+language sql stable as $$
   with f as (
     select * from llm_calls
     where created_at >= p_from and created_at < p_to
@@ -296,17 +296,17 @@ language sql stable as $
         select (created_at at time zone 'utc')::date as day, agency, count(*) as calls, sum(cost_usd) as cost_usd
         from f group by 1, 2) t), '[]'::jsonb)
   );
-$;
+$$;
 
 -- Month-to-date spend per agency, for the budget table.
 create or replace function budget_mtd(p_since timestamptz, p_include_simulated boolean)
 returns table (agency text, spend numeric)
-language sql stable as $
+language sql stable as $$
   select agency, coalesce(sum(cost_usd), 0)
   from llm_calls
   where created_at >= p_since and (p_include_simulated or not simulated)
   group by agency;
-$;
+$$;
 
 -- ---------- Dashboard helper views ----------
 create or replace view v_daily_spend as
@@ -333,3 +333,18 @@ alter table alerts      enable row level security;
 alter table rate_limits enable row level security;
 alter table eval_runs   enable row level security;
 alter table eval_results enable row level security;
+
+-- ---------- API access for the server key (see supabase/migrations/005_grants.sql) ----------
+-- Newer Supabase projects do not automatically grant API roles access to tables created
+-- in the SQL editor, so the app's service key got "permission denied for table ...".
+-- Only service_role is granted anything. The public anon and authenticated roles get
+-- nothing, and row level security stays ON for every table, so the browser can read nothing.
+grant usage on schema public to service_role;
+grant all on all tables in schema public to service_role;
+grant all on all sequences in schema public to service_role;
+grant execute on all functions in schema public to service_role;
+
+-- Cover tables and functions added later by new migrations.
+alter default privileges in schema public grant all on tables to service_role;
+alter default privileges in schema public grant all on sequences to service_role;
+alter default privileges in schema public grant execute on functions to service_role;

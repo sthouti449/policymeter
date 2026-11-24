@@ -16,7 +16,8 @@
     "eval": "tsx --conditions=react-server scripts/run-evals.ts",
     "try-retrieve": "tsx --conditions=react-server scripts/try-retrieve.ts",
     "check:bundle": "tsx --conditions=react-server scripts/check-secrets.ts",
-    "smoke": "tsx scripts/smoke.ts"
+    "smoke": "tsx scripts/smoke.ts",
+    "check:setup": "tsx --conditions=react-server scripts/check-setup.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.13.0",

@@ -108,6 +108,7 @@ describe("reviewer prompt helpers", () => {
     expect(DEMO_SYSTEM_PROMPT).toContain(DEMO_OFF_TOPIC);
     expect(DEMO_SYSTEM_PROMPT).toMatch(/Never invent facts/);
     expect(DEMO_SYSTEM_PROMPT).toMatch(/not instructions/);
+    expect(DEMO_SYSTEM_PROMPT).toMatch(/only when the context itself states them/); // no invented trade-offs or motives
   });
 });
 
