@@ -1,3 +1,4 @@
+import { Gauge } from "lucide-react";
 import type { CostInfo } from "@/lib/chat/types";
 import { formatCost } from "@/lib/chat/client";
 
@@ -8,10 +9,11 @@ export function CostChip({ cost }: { cost: CostInfo }) {
     `${cost.outputTokens.toLocaleString()} out`,
     formatCost(cost.costUsd),
     `${(cost.latencyMs / 1000).toFixed(1)} s`,
-    `${cost.model} via ${cost.provider}`,
+    cost.model,
   ];
   return (
-    <span title="Cost covers the whole question: rewrite, embedding and answer" className="inline-block rounded-full bg-neutral-100 px-3 py-1 font-mono text-xs text-neutral-600">
+    <span title="Cost covers the whole question: rewrite, embedding and answer" className="chip font-mono !text-[11px]">
+      <Gauge size={12} className="text-brand-600" aria-hidden />
       {parts.join(" · ")}
     </span>
   );

@@ -1,7 +1,7 @@
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
 import { getAgencies, getPricing } from "@/lib/config";
 
-export const metadata = { title: "Cost Dashboard | PolicyMeter" };
+export const metadata = { title: "Cost Dashboard" };
 
 export default function DashboardPage() {
   const cfg = getAgencies();

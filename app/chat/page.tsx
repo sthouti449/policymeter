@@ -4,7 +4,7 @@ import { getSupabase } from "@/lib/db/supabase";
 import { INTERNAL_USE_CASES } from "@/lib/guardrails/input";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Policy Assistant | PolicyMeter" };
+export const metadata = { title: "Policy Assistant" };
 
 /** "Documents last ingested" comes from the database; a failure just shows "unknown". */
 async function lastIngested(): Promise<string | null> {

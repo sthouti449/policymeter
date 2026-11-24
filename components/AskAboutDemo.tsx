@@ -22,7 +22,7 @@ export function AskAboutDemo() {
   const end = useRef<HTMLDivElement>(null);
 
   useEffect(() => { if (open) field.current?.focus(); }, [open]);
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth" }), [turns]);
+  useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth" }); }, [turns]);
 
   const close = () => { setOpen(false); button.current?.focus(); };
 
@@ -49,7 +49,7 @@ export function AskAboutDemo() {
     <>
       {!open && (
         <button ref={button} onClick={() => setOpen(true)} aria-label="Ask about this demo"
-          className="fixed bottom-24 right-4 z-40 flex items-center gap-2 rounded-full bg-black px-4 py-3 text-sm text-white shadow-lg hover:bg-neutral-800 sm:bottom-4">
+          className="btn btn-primary fixed bottom-24 right-4 z-40 !px-4 !py-3 shadow-xl shadow-brand-700/25 sm:bottom-5 sm:right-5">
           <MessageCircleQuestion size={18} aria-hidden />
           <span className="hidden sm:inline">Ask about this demo</span>
         </button>
@@ -57,47 +57,47 @@ export function AskAboutDemo() {
 
       {open && (
         <section role="dialog" aria-label="Ask about this demo" onKeyDown={(e) => e.key === "Escape" && close()}
-          className="fixed inset-x-2 bottom-2 z-40 flex max-h-[80vh] flex-col rounded-2xl border bg-white shadow-2xl sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[24rem]">
-          <header className="flex items-center justify-between border-b px-4 py-3">
+          className="card fixed inset-x-2 bottom-2 z-40 flex max-h-[80vh] flex-col overflow-hidden shadow-2xl sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[24rem]">
+          <header className="flex items-center justify-between bg-gradient-to-br from-brand-700 to-ink-900 px-4 py-3.5 text-white">
             <div>
               <h2 className="font-semibold">Ask about this demo</h2>
-              <p className="text-xs text-neutral-500">Architecture, cost metering and the builder&rsquo;s background.</p>
+              <p className="text-xs text-brand-100">Architecture, cost metering and the builder&rsquo;s background.</p>
             </div>
-            <button onClick={close} aria-label="Close" className="rounded p-1 hover:bg-neutral-100"><X size={18} aria-hidden /></button>
+            <button onClick={close} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15"><X size={18} aria-hidden /></button>
           </header>
 
           <div className="flex-1 space-y-3 overflow-y-auto p-4 text-sm" aria-live="polite">
             {turns.length === 0 && (
               <div className="flex flex-wrap gap-2">
                 {DEMO_STARTERS.map((q) => (
-                  <button key={q} onClick={() => ask(q)} className="rounded-full border px-3 py-1.5 text-left text-xs hover:bg-neutral-50">{q}</button>
+                  <button key={q} onClick={() => ask(q)} className="rounded-full border border-ink-200 bg-white px-3 py-1.5 text-left text-xs font-medium text-ink-700 transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800">{q}</button>
                 ))}
               </div>
             )}
             {turns.map((t) => (
               <div key={t.id} className="space-y-2">
-                <p className="ml-auto w-fit max-w-[90%] rounded-2xl bg-black px-3 py-1.5 text-white">{t.question}</p>
+                <p className="ml-auto w-fit max-w-[90%] rounded-2xl rounded-br-md bg-gradient-to-br from-brand-500 to-brand-700 px-3.5 py-2 text-white shadow-sm">{t.question}</p>
                 {t.error ? (
                   <p role="alert" className="text-red-700">{t.error}</p>
                 ) : t.reply ? (
-                  <div className="space-y-2 rounded-2xl border p-3">
-                    <p className="whitespace-pre-wrap leading-relaxed">{t.reply.answer}</p>
-                    {t.reply.sources.length > 0 && <p className="text-xs text-neutral-500">From: {t.reply.sources.join("; ")}</p>}
-                    <p className="text-xs text-neutral-500">{DISCLAIMER}</p>
+                  <div className="space-y-2 rounded-2xl rounded-tl-md border border-ink-200 bg-ink-50/70 p-3.5">
+                    <p className="whitespace-pre-wrap leading-relaxed text-ink-800">{t.reply.answer}</p>
+                    {t.reply.sources.length > 0 && <p className="text-xs text-ink-500">From: {t.reply.sources.join("; ")}</p>}
+                    <p className="text-[11px] text-ink-500">{DISCLAIMER}</p>
                     <CostChip cost={t.reply.cost} />
                   </div>
                 ) : (
-                  <p className="text-neutral-500">Thinking&hellip;</p>
+                  <p className="flex items-center gap-2 text-ink-500" role="status"><span className="flex gap-1" aria-hidden><span className="dot" /><span className="dot" /><span className="dot" /></span>Thinking&hellip;</p>
                 )}
               </div>
             ))}
             <div ref={end} />
           </div>
 
-          <form onSubmit={(e) => { e.preventDefault(); void ask(input); }} className="flex gap-2 border-t p-3">
+          <form onSubmit={(e) => { e.preventDefault(); void ask(input); }} className="flex gap-2 border-t border-ink-100 p-3">
             <input ref={field} value={input} onChange={(e) => setInput(e.target.value)} maxLength={1000} placeholder="Ask about the build" aria-label="Your question"
-              className="min-w-0 flex-1 rounded-full border px-3 py-2 text-sm" />
-            <button disabled={busy || !input.trim()} aria-label="Send" className="rounded-full bg-black p-2.5 text-white disabled:opacity-40"><Send size={16} aria-hidden /></button>
+              className="field min-w-0 flex-1 !rounded-full !px-4 !py-2" />
+            <button disabled={busy || !input.trim()} aria-label="Send" className="btn btn-primary !h-10 !w-10 !p-0"><Send size={16} aria-hidden /></button>
           </form>
         </section>
       )}

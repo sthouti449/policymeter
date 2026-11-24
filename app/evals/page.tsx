@@ -8,7 +8,7 @@ import { getResults, listRuns } from "@/lib/evals/store";
 import type { ResultRow, RunRow, RunSummary } from "@/lib/evals/types";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Evals | PolicyMeter" };
+export const metadata = { title: "Evals" };
 
 /** The stored run row has the headline numbers, which is all checkTargets needs. */
 const summaryOf = (r: RunRow): RunSummary => ({
@@ -35,11 +35,12 @@ export default async function EvalsPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="viz-root min-h-screen">
-      <main className="mx-auto max-w-6xl space-y-4 p-4 md:p-6">
+      <main className="mx-auto max-w-6xl space-y-5 p-4 pt-8 md:p-6 md:pt-10">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold">Evals</h1>
-            <p className="text-sm" style={{ color: "var(--viz-text-2)" }}>The golden set, scored against the targets set before building (docs/PRD.md).</p>
+            <p className="eyebrow">Evals</p>
+            <h1 className="mt-1 text-2xl font-semibold text-ink-900 sm:text-3xl">Measured against targets set before the build</h1>
+            <p className="mt-1.5 max-w-2xl text-sm text-ink-600">A golden set of 16 questions, scored for retrieval, citations, groundedness and refusals (see docs/PRD.md).</p>
           </div>
           <RunEvalsButton />
         </header>

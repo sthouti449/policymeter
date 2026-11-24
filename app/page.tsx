@@ -2,22 +2,32 @@ import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import { ArrowRight, BarChart3, FlaskConical, MessagesSquare } from "lucide-react";
-import { Markdown } from "@/components/Markdown";
+import { Hero } from "@/components/landing/Hero";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Role } from "@/components/landing/Role";
 import { formatCost } from "@/lib/format";
 import { getSiteStats } from "@/lib/site/stats";
 
 // Rebuilt at most once a minute, so the live numbers are fresh without a query per visitor.
 export const revalidate = 60;
 
-function Card({ href, Icon, title, text, stat, statLabel }: { href: string; Icon: typeof BarChart3; title: string; text: string; stat: string; statLabel: string }) {
+interface FeatureProps { href: string; Icon: typeof BarChart3; title: string; text: string; stat: string; statLabel: string }
+
+function Feature({ href, Icon, title, text, stat, statLabel }: FeatureProps) {
   return (
-    <Link href={href} className="group flex flex-col rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow-md">
-      <Icon size={22} aria-hidden className="text-neutral-700" />
-      <h2 className="mt-3 text-lg font-semibold">{title}</h2>
-      <p className="mt-1 flex-1 text-sm text-neutral-600">{text}</p>
-      <p className="mt-4 text-2xl font-semibold">{stat}</p>
-      <p className="text-xs text-neutral-500">{statLabel}</p>
-      <span className="mt-3 flex items-center gap-1 text-sm font-medium">Open <ArrowRight size={14} aria-hidden className="transition group-hover:translate-x-0.5" /></span>
+    <Link href={href} className="card card-hover group flex flex-col p-6">
+      <span className="icon-tile"><Icon size={20} aria-hidden /></span>
+      <h3 className="mt-4 text-lg font-semibold text-ink-900">{title}</h3>
+      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-600">{text}</p>
+      <div className="mt-5 flex items-end justify-between border-t border-ink-100 pt-4">
+        <div>
+          <p className="text-2xl font-semibold tracking-tight text-ink-900">{stat}</p>
+          <p className="text-xs text-ink-500">{statLabel}</p>
+        </div>
+        <span className="flex items-center gap-1 text-sm font-semibold text-brand-700">
+          Open <ArrowRight size={15} aria-hidden className="transition group-hover:translate-x-1" />
+        </span>
+      </div>
     </Link>
   );
 }
@@ -25,39 +35,45 @@ function Card({ href, Icon, title, text, stat, statLabel }: { href: string; Icon
 export default async function Home() {
   const stats = await getSiteStats();
   const mapping = fs.readFileSync(path.join(process.cwd(), "content", "about-kb", "jd-mapping.md"), "utf8");
-  const links = [
-    { label: "LinkedIn", href: process.env.NEXT_PUBLIC_LINKEDIN_URL },
-    { label: "GitHub", href: process.env.NEXT_PUBLIC_GITHUB_URL },
-  ].filter((l): l is { label: string; href: string } => !!l.href);
 
   return (
-    <main className="mx-auto max-w-5xl space-y-12 px-4 py-12">
-      <section>
-        <h1 className="text-4xl font-semibold tracking-tight">PolicyMeter</h1>
-        <p className="mt-3 max-w-2xl text-lg text-neutral-600">
-          Cited answers about Virginia AI policy, with every model call metered by agency and use case, so you can trust the answer and see what it cost.
+    <main>
+      <Hero />
+
+      <section aria-label="What is in the demo" className="mx-auto max-w-7xl px-4">
+        <div className="grid gap-5 md:grid-cols-3">
+          <Feature href="/chat" Icon={MessagesSquare} title="Policy Assistant"
+            text="Ask a policy question. Every answer cites its source, and it says so when the documents don't cover it."
+            stat={stats.documents == null ? "n/a" : String(stats.documents)} statLabel="policy documents loaded" />
+          <Feature href="/dashboard" Icon={BarChart3} title="Cost Dashboard"
+            text="Spend by agency, use case and model, with budgets, alerts, a forecast and a model what-if."
+            stat={stats.monthSpendUsd == null ? "n/a" : formatCost(stats.monthSpendUsd)}
+            statLabel={`spent this month${stats.hasSimulated ? " (includes simulated traffic)" : ""}`} />
+          <Feature href="/evals" Icon={FlaskConical} title="Evals"
+            text="A golden set scored for retrieval, citations, groundedness and correct refusals."
+            stat={stats.groundedness == null ? "No runs yet" : `${stats.groundedness.toFixed(1)} / 5`}
+            statLabel={stats.groundedness == null ? "groundedness, latest run" : `groundedness, latest run (${stats.evalQuestions} questions)`} />
+        </div>
+      </section>
+
+      <HowItWorks />
+      <Role source={mapping} />
+
+      <section className="mx-auto max-w-7xl px-4 pb-4">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink-900 via-brand-900 to-brand-700 px-6 py-12 text-center sm:px-12">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-400/20 blur-3xl" aria-hidden />
+          <h2 className="text-2xl font-semibold text-white sm:text-3xl">See how it holds up</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-100 sm:text-base">
+            The targets were set before the build. The scorecard, the architecture and the production path are all on the record.
+          </p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link href="/evals" className="btn bg-white text-brand-800 hover:bg-brand-50">See the eval results</Link>
+            <Link href="/architecture" className="btn border border-white/30 text-white hover:bg-white/10">Read the architecture</Link>
+          </div>
+        </div>
+        <p className="mt-6 text-center text-sm text-ink-500">
+          Questions about the build? Use the <strong className="font-semibold text-ink-700">Ask about this demo</strong> button in the corner.
         </p>
-        <p className="mt-2 text-sm text-neutral-500">An independent proof of concept by {process.env.NEXT_PUBLIC_BUILDER_NAME ?? "the builder"}. Public documents only.</p>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-3" aria-label="What is in the demo">
-        <Card href="/chat" Icon={MessagesSquare} title="Policy Assistant" text="Ask a policy question. Every answer cites its source and says so when the documents don't cover it."
-          stat={stats.documents == null ? "n/a" : String(stats.documents)} statLabel="policy documents loaded" />
-        <Card href="/dashboard" Icon={BarChart3} title="Cost Dashboard" text="Spend by agency, use case and model, with budgets, alerts, a forecast and a model what-if."
-          stat={stats.monthSpendUsd == null ? "n/a" : formatCost(stats.monthSpendUsd)} statLabel={`spent this month${stats.hasSimulated ? " (includes simulated traffic)" : ""}`} />
-        <Card href="/evals" Icon={FlaskConical} title="Evals" text="A golden set scored for retrieval, citations, groundedness and correct refusals."
-          stat={stats.groundedness == null ? "No runs yet" : `${stats.groundedness.toFixed(1)} / 5`} statLabel={stats.groundedness == null ? "groundedness, latest run" : `groundedness, latest run (${stats.evalQuestions} questions)`} />
-      </section>
-
-      <section aria-labelledby="role">
-        <h2 id="role" className="text-2xl font-semibold">How this maps to the role</h2>
-        <Markdown source={mapping} headingOffset={1} dropTitle />
-      </section>
-
-      <section className="flex flex-wrap items-center gap-4 border-t pt-6 text-sm">
-        <Link href="/architecture" className="font-medium underline">Architecture and POC scorecard</Link>
-        {links.map((l) => <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="underline">{l.label}</a>)}
-        <span className="text-neutral-500">Use the &ldquo;Ask about this demo&rdquo; button to question the build.</span>
       </section>
     </main>
   );

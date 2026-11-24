@@ -14,7 +14,7 @@ export function CallsTable({ filters, modelLabels, onTrace }: { filters: Filters
   const [error, setError] = useState<string | null>(null);
   const query = filtersToQuery(filters);
 
-  useEffect(() => setPage(1), [query]);
+  useEffect(() => { setPage(1); }, [query]);
   useEffect(() => {
     const ctl = new AbortController();
     setError(null);

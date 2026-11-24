@@ -4,7 +4,7 @@ import { parseInline, parseMarkdown, type Block } from "@/lib/rag/markdown";
 // Renders the small markdown subset used by content/about-kb/jd-mapping.md and
 // docs/POC_SCORECARD.md. No raw HTML is ever injected, so file contents can't add markup.
 
-function Inline({ text }: { text: string }) {
+export function Inline({ text }: { text: string }) {
   return (
     <>
       {parseInline(text).map((t, i) =>

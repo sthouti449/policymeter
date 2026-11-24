@@ -41,16 +41,20 @@ export function DashboardClient({ agencies, useCases, models }: Props) {
 
   return (
     <div className="viz-root min-h-screen">
-      <main className="mx-auto max-w-7xl space-y-4 p-4 md:p-6">
-        <header>
-          <h1 className="text-xl font-semibold">Cost Dashboard</h1>
-          <p className="text-sm" style={{ color: "var(--viz-text-2)" }}>Every model call, by agency and use case. Agency tags are simulated labels for cost allocation.</p>
+      <main className="mx-auto max-w-7xl space-y-4 p-4 pt-8 md:p-6 md:pt-10">
+        <header className="flex flex-wrap items-end justify-between gap-3 pt-2">
+          <div>
+            <p className="eyebrow">Cost Dashboard</p>
+            <h1 className="mt-1 text-2xl font-semibold text-ink-900 sm:text-3xl">Every call, by agency and use case</h1>
+            <p className="mt-1.5 max-w-2xl text-sm text-ink-600">Agency tags are simulated labels for cost allocation.</p>
+          </div>
+          <span className="chip"><span className="h-1.5 w-1.5 rounded-full bg-mint-600" aria-hidden /> Live data</span>
         </header>
 
-        <FilterBar filters={filters} preset={preset} agencies={agencies} useCases={useCases} models={models}
+        <div className="viz-card p-4"><FilterBar filters={filters} preset={preset} agencies={agencies} useCases={useCases} models={models}
           showSimulatedBadge={filters.includeSimulated && !!data?.hasSimulated}
           onPreset={(p) => { setPreset(p); setFilters((f) => ({ ...f, ...presetRange(p) })); }}
-          onChange={(patch) => setFilters((f) => ({ ...f, ...patch }))} />
+          onChange={(patch) => setFilters((f) => ({ ...f, ...patch }))} /></div>
 
         {data && data.zeroPricedModels.length > 0 && (
           <div role="alert" className="rounded-lg border px-4 py-3 text-sm" style={{ borderColor: "var(--viz-warning)", background: "var(--viz-surface)" }}>

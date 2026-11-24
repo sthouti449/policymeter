@@ -32,10 +32,10 @@ export function FilterBar({ filters, preset, agencies, useCases, models, showSim
 
   return (
     <div className="flex flex-wrap items-end gap-4" role="search" aria-label="Dashboard filters">
-      <div role="group" aria-label="Date range" className="flex overflow-hidden rounded-md border" style={style}>
+      <div role="group" aria-label="Date range" className="flex overflow-hidden rounded-lg border border-ink-200 bg-ink-50 p-0.5">
         {PRESETS.map((p) => (
           <button key={p.id} onClick={() => onPreset(p.id)} aria-pressed={preset === p.id}
-            className="px-3 py-1.5 text-sm" style={preset === p.id ? { background: "var(--viz-text-1)", color: "var(--viz-surface)" } : undefined}>
+            className={`whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition ${preset === p.id ? "bg-brand-600 text-white shadow-sm" : "text-ink-600 hover:bg-white hover:text-ink-900"}`}>
             {p.label}
           </button>
         ))}
@@ -48,9 +48,9 @@ export function FilterBar({ filters, preset, agencies, useCases, models, showSim
         Include simulated traffic
       </label>
       {showSimulatedBadge && (
-        <span className="mb-1.5 rounded-full border px-2.5 py-0.5 text-xs" style={style}>Includes simulated traffic</span>
+        <span className="chip mb-1.5 whitespace-nowrap !border-brand-200 !bg-brand-50 !text-brand-800">Includes simulated traffic</span>
       )}
-      <a href={`/api/calls${filtersToQuery(filters, { format: "csv" })}`} download className="ml-auto flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm" style={style}>
+      <a href={`/api/calls${filtersToQuery(filters, { format: "csv" })}`} download className="btn btn-secondary ml-auto !px-4 !py-2" style={style}>
         <Download size={14} aria-hidden /> Export CSV
       </a>
     </div>
