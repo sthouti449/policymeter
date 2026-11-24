@@ -8,7 +8,7 @@ import { td, th } from "./ChartCard";
 const PAGE_SIZE = 15;
 
 /** Recent calls for the current filters, newest first, with a Trace button per row. */
-export function CallsTable({ apiBase, filters, modelLabels, onTrace }: { apiBase: string; filters: Filters; modelLabels: Record<string, string>; onTrace: (requestId: string) => void }) {
+export function CallsTable({ filters, modelLabels, onTrace }: { filters: Filters; modelLabels: Record<string, string>; onTrace: (requestId: string) => void }) {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<{ rows: CallRow[]; total: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,13 +18,13 @@ export function CallsTable({ apiBase, filters, modelLabels, onTrace }: { apiBase
   useEffect(() => {
     const ctl = new AbortController();
     setError(null);
-    fetch(`${apiBase}/calls${filtersToQuery(filters, { page, pageSize: PAGE_SIZE })}`, { signal: ctl.signal })
+    fetch(`/api/calls${filtersToQuery(filters, { page, pageSize: PAGE_SIZE })}`, { signal: ctl.signal })
       .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error((await r.json()).error ?? "Could not load calls."))))
       .then(setData)
       .catch((e: Error) => e.name !== "AbortError" && setError(e.message));
     return () => ctl.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `query` is the serialised `filters`
-  }, [query, page, apiBase]);
+  }, [query, page]);
 
   const pages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1;
   return (
@@ -32,8 +32,8 @@ export function CallsTable({ apiBase, filters, modelLabels, onTrace }: { apiBase
       <h2 className="font-semibold">Recent calls</h2>
       <p className="mb-3 text-xs" style={{ color: "var(--viz-text-2)" }}>Every model call in range. Open a trace to see the retrieved chunks and per-step cost.</p>
       {error && <p role="alert" className="text-sm">{error}</p>}
-      {!data && !error && <p className="py-6 text-center text-sm" style={{ color: "var(--viz-muted)" }}>Loading&hellip;</p>}
-      {data && data.rows.length === 0 && <p className="py-6 text-center text-sm" style={{ color: "var(--viz-muted)" }}>No calls for these filters.</p>}
+      {!data && !error && <p className="py-6 text-center text-sm" style={{ color: "var(--viz-text-2)" }}>Loading&hellip;</p>}
+      {data && data.rows.length === 0 && <p className="py-6 text-center text-sm" style={{ color: "var(--viz-text-2)" }}>No calls for these filters.</p>}
       {data && data.rows.length > 0 && (
         <>
           <div className="overflow-x-auto">

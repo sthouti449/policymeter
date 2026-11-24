@@ -14,7 +14,9 @@
     "seed": "tsx --conditions=react-server scripts/seed-traffic.ts",
     "check:metering": "tsx --conditions=react-server scripts/check-metering.ts",
     "eval": "tsx --conditions=react-server scripts/run-evals.ts",
-    "try-retrieve": "tsx --conditions=react-server scripts/try-retrieve.ts"
+    "try-retrieve": "tsx --conditions=react-server scripts/try-retrieve.ts",
+    "check:bundle": "tsx --conditions=react-server scripts/check-secrets.ts",
+    "smoke": "tsx scripts/smoke.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.13.0",
@@ -46,5 +48,8 @@
     "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.1.1"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

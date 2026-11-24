@@ -5,7 +5,6 @@ import type { Filters } from "@/lib/metrics/types";
 
 interface Option { value: string; label: string }
 interface Props {
-  apiBase: string;
   filters: Filters;
   preset: Preset;
   agencies: Option[];
@@ -20,7 +19,7 @@ const PRESETS: { id: Preset; label: string }[] = [{ id: "7d", label: "7 days" },
 const field = "rounded-md border bg-transparent px-2 py-1.5 text-sm";
 
 /** One row of filters above the charts. Selection is shown with a filled button, not colour alone. */
-export function FilterBar({ apiBase, filters, preset, agencies, useCases, models, showSimulatedBadge, onPreset, onChange }: Props) {
+export function FilterBar({ filters, preset, agencies, useCases, models, showSimulatedBadge, onPreset, onChange }: Props) {
   const style = { borderColor: "var(--viz-border)", color: "var(--viz-text-1)" };
   const select = (label: string, value: string | undefined, options: Option[], key: "agency" | "useCase" | "model") => (
     <label className="grid gap-1 text-xs" style={{ color: "var(--viz-text-2)" }}>{label}
@@ -51,7 +50,7 @@ export function FilterBar({ apiBase, filters, preset, agencies, useCases, models
       {showSimulatedBadge && (
         <span className="mb-1.5 rounded-full border px-2.5 py-0.5 text-xs" style={style}>Includes simulated traffic</span>
       )}
-      <a href={`${apiBase}/calls${filtersToQuery(filters, { format: "csv" })}`} download className="ml-auto flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm" style={style}>
+      <a href={`/api/calls${filtersToQuery(filters, { format: "csv" })}`} download className="ml-auto flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm" style={style}>
         <Download size={14} aria-hidden /> Export CSV
       </a>
     </div>

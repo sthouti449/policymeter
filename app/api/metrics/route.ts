@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { filtersFromRequest, serverError } from "@/lib/metrics/http";
+import { filtersFromRequest, serverError, readGuard } from "@/lib/metrics/http";
 import { getMetrics } from "@/lib/metrics/query";
 
 export const runtime = "nodejs";
@@ -7,6 +7,8 @@ export const dynamic = "force-dynamic";
 
 // GET /api/metrics?from&to&agency&useCase&model&includeSimulated
 export async function GET(req: Request) {
+  const limited = await readGuard(req);
+  if (limited) return limited;
   const filters = filtersFromRequest(req);
   if (filters instanceof NextResponse) return filters;
   try {

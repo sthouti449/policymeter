@@ -3,7 +3,7 @@ import type { TargetResult } from "@/lib/evals/types";
 
 /** Pass or fail is an icon plus a word, never colour alone. Green/red only tint the icon. */
 function Verdict({ pass }: { pass: boolean | null }) {
-  const { Icon, label, color } = pass == null ? { Icon: Minus, label: "Not measured", color: "var(--viz-muted)" }
+  const { Icon, label, color } = pass == null ? { Icon: Minus, label: "Not measured", color: "var(--viz-text-2)" }
     : pass ? { Icon: Check, label: "Pass", color: "var(--viz-good)" } : { Icon: X, label: "Fail", color: "var(--viz-critical)" };
   return (
     <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium" style={{ borderColor: "var(--viz-border)" }}>
@@ -28,11 +28,11 @@ export function Scorecard({ targets, totalCostUsd, questions, when }: { targets:
               <Verdict pass={t.pass} />
             </div>
             <p className="mt-2 text-2xl font-semibold">{t.value}</p>
-            <p className="text-xs" style={{ color: "var(--viz-muted)" }}>target {t.target}</p>
+            <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>target {t.target}</p>
           </div>
         ))}
       </div>
-      <p className="text-xs" style={{ color: "var(--viz-muted)" }}>The seventh target, unmetered calls, is checked separately with <code>npm run check:metering</code>.</p>
+      <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>The seventh target, unmetered calls, is checked separately with <code>npm run check:metering</code>.</p>
     </section>
   );
 }

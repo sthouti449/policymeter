@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getEnv } from "@/lib/env";
+import { isSameOrigin } from "@/lib/guardrails/origin";
 import { runEvals } from "@/lib/evals/run";
 
 export const runtime = "nodejs";
@@ -21,7 +22,7 @@ function tokenMatches(given: string | null, expected: string): boolean {
 
 // POST /api/evals/run   header: x-admin-token   body (optional): { only: ["q01-disclaimer"] }
 // Spends real money (about 16 questions plus judge calls), so it is admin-only.
-export async function POST(req: Request) {
+async function handle(req: Request) {
   const expected = getEnv().env.ADMIN_TOKEN;
   if (!expected || expected === "change-me") return fail(503, "Running evals is disabled until ADMIN_TOKEN is set to a real secret.");
   if (!tokenMatches(req.headers.get("x-admin-token"), expected)) return fail(401, "Invalid admin token.");
@@ -34,5 +35,16 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("eval run failed:", err instanceof Error ? err.message : err);
     return fail(500, "The eval run failed. Check the server logs.");
+  }
+}
+
+export async function POST(req: Request) {
+  if (!isSameOrigin(req)) return fail(403, "Cross-site requests are not allowed.");
+  try {
+    return await handle(req);
+  } catch (err) {
+    // Misconfiguration or an unexpected bug: log the detail, tell the browser nothing sensitive.
+    console.error("eval route failed:", err instanceof Error ? err.message : err);
+    return fail(500, "Something went wrong. Please try again.");
   }
 }

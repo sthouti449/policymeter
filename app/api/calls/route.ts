@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { callsToCsv } from "@/lib/metrics/csv";
-import { filtersFromRequest, jsonError, serverError } from "@/lib/metrics/http";
+import { filtersFromRequest, jsonError, serverError, readGuard } from "@/lib/metrics/http";
 import { CSV_MAX_ROWS, getAllCalls, getCalls } from "@/lib/metrics/query";
 
 export const runtime = "nodejs";
@@ -16,6 +16,8 @@ const paging = z.object({
 // GET /api/calls?...filters&page&pageSize          -> one page of calls
 // GET /api/calls?...filters&format=csv             -> chargeback CSV of ALL filtered calls
 export async function GET(req: Request) {
+  const limited = await readGuard(req);
+  if (limited) return limited;
   const filters = filtersFromRequest(req);
   if (filters instanceof NextResponse) return filters;
   const p = paging.safeParse(Object.fromEntries(new URL(req.url).searchParams));

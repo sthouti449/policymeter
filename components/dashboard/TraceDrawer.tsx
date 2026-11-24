@@ -6,7 +6,7 @@ import type { TracePayload } from "@/lib/metrics/types";
 import { td, th } from "./ChartCard";
 
 /** One question: every call it made, and the chunks it retrieved with their scores. Esc closes. */
-export function TraceDrawer({ apiBase, requestId, onClose }: { apiBase: string; requestId: string; onClose: () => void }) {
+export function TraceDrawer({ requestId, onClose }: { requestId: string; onClose: () => void }) {
   const [trace, setTrace] = useState<TracePayload | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,12 +18,12 @@ export function TraceDrawer({ apiBase, requestId, onClose }: { apiBase: string; 
 
   useEffect(() => {
     let live = true;
-    fetch(`${apiBase}/trace/${requestId}`)
+    fetch(`/api/trace/${requestId}`)
       .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error((await r.json()).error ?? "Trace not found."))))
       .then((t) => live && setTrace(t))
       .catch((e: Error) => live && setError(e.message));
     return () => { live = false; };
-  }, [requestId, apiBase]);
+  }, [requestId]);
 
   return (
     <aside role="dialog" aria-label="Request trace" className="fixed inset-x-0 bottom-0 z-30 max-h-[80vh] overflow-y-auto rounded-t-2xl border p-5 shadow-2xl md:inset-y-0 md:left-auto md:right-0 md:max-h-none md:w-[32rem] md:rounded-none"
@@ -37,7 +37,7 @@ export function TraceDrawer({ apiBase, requestId, onClose }: { apiBase: string; 
       </div>
 
       {error && <p role="alert" className="mt-4 text-sm">{error}</p>}
-      {!trace && !error && <p className="mt-4 text-sm" style={{ color: "var(--viz-muted)" }}>Loading&hellip;</p>}
+      {!trace && !error && <p className="mt-4 text-sm" style={{ color: "var(--viz-text-2)" }}>Loading&hellip;</p>}
       {trace && (
         <div className="mt-4 space-y-5">
           <section>
@@ -60,7 +60,7 @@ export function TraceDrawer({ apiBase, requestId, onClose }: { apiBase: string; 
           <section>
             <h3 className="mb-1 text-sm font-medium">Retrieved chunks</h3>
             {trace.retrieval.length === 0 ? (
-              <p className="text-sm" style={{ color: "var(--viz-muted)" }}>No retrieval recorded for this request.</p>
+              <p className="text-sm" style={{ color: "var(--viz-text-2)" }}>No retrieval recorded for this request.</p>
             ) : (
               <ul className="space-y-2">
                 {trace.retrieval.map((c) => (

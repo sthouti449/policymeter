@@ -40,7 +40,7 @@ export function RunEvalsButton() {
         <Play size={14} aria-hidden />{busy ? "Running (about a minute)..." : "Run evals"}
       </button>
       {error && <p role="alert" className="basis-full text-sm">{error}</p>}
-      {!error && <p className="basis-full text-xs" style={{ color: "var(--viz-muted)" }}>Runs the golden set with real model calls, which costs a few cents.</p>}
+      {!error && <p className="basis-full text-xs" style={{ color: "var(--viz-text-2)" }}>Runs the golden set with real model calls, which costs a few cents.</p>}
     </form>
   );
 }

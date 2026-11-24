@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { Check, ChevronDown, ChevronRight, X } from "lucide-react";
 import type { ResultRow } from "@/lib/evals/types";
 
-const yesNo = (v: boolean | null) => (v == null ? <span style={{ color: "var(--viz-muted)" }}>n/a</span> : v ? <Check size={15} aria-label="yes" /> : <X size={15} aria-label="no" />);
+const yesNo = (v: boolean | null) => (v == null ? <span style={{ color: "var(--viz-text-2)" }}>n/a</span> : v ? <Check size={15} aria-label="yes" /> : <X size={15} aria-label="no" />);
 
 /** Every golden-set question. A question needs a look when it misses a phrase, is refused wrongly, or scores under 4. */
 export function ResultsTable({ rows }: { rows: ResultRow[] }) {

@@ -45,6 +45,7 @@ export const envSchema = z.object({
   DAILY_SPEND_CAP_USD: num(2),
   DEMO_DAILY_SPEND_CAP_USD: num(0.5),
   RATE_LIMIT_PER_MINUTE: num(8),
+  RATE_LIMIT_READS_PER_MINUTE: num(60), // dashboard and trace reads, a separate bucket from questions
   MAX_QUESTION_CHARS: num(1000),
 
   EMBEDDING_DIMENSIONS: num(1536),
@@ -105,6 +106,13 @@ export function selectProviders(env: Env): ActiveProviders {
   return { chat, embed };
 }
 
+/** In production the IP-hash salt must be a real secret, or stored hashes could be reversed by brute force. */
+export function assertProductionSecrets(env: Env, nodeEnv = process.env.NODE_ENV) {
+  if (nodeEnv === "production" && (env.IP_HASH_SALT === "dev-salt-change-me" || env.IP_HASH_SALT.length < 16 || env.IP_HASH_SALT === "change-me-to-a-random-string")) {
+    throw new ConfigError("IP_HASH_SALT must be set to a random secret of at least 16 characters in production.");
+  }
+}
+
 let cached: { env: Env; providers: ActiveProviders } | undefined;
 
 /** Parse process.env once and fail fast with a readable message. */
@@ -115,6 +123,7 @@ export function getEnv() {
       const lines = parsed.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`);
       throw new ConfigError(`Invalid environment variables:\n${lines.join("\n")}`);
     }
+    assertProductionSecrets(parsed.data);
     cached = { env: parsed.data, providers: selectProviders(parsed.data) };
   }
   return cached;

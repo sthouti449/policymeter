@@ -22,7 +22,7 @@ export function WhatIfCard({ data }: { data: MetricsPayload }) {
         </select>
       </label>
       {!result || !target ? (
-        <p className="mt-4 text-sm" style={{ color: "var(--viz-muted)" }}>No chat calls in this period to re-price.</p>
+        <p className="mt-4 text-sm" style={{ color: "var(--viz-text-2)" }}>No chat calls in this period to re-price.</p>
       ) : (
         <div className="mt-4 space-y-2 text-sm">
           <p>

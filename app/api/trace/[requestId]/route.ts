@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { jsonError, serverError } from "@/lib/metrics/http";
+import { jsonError, serverError, readGuard } from "@/lib/metrics/http";
 import { getTrace } from "@/lib/metrics/query";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // GET /api/trace/<requestId>: every call for one question, plus the chunks it retrieved.
-export async function GET(_req: Request, ctx: { params: Promise<{ requestId: string }> }) {
+export async function GET(req: Request, ctx: { params: Promise<{ requestId: string }> }) {
+  const limited = await readGuard(req);
+  if (limited) return limited;
   const { requestId } = await ctx.params;
   if (!z.string().uuid().safeParse(requestId).success) return jsonError(400, "Invalid request id.");
   try {

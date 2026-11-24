@@ -13,10 +13,9 @@ import { TraceDrawer } from "./TraceDrawer";
 import { WhatIfCard } from "./WhatIfCard";
 
 interface Option { value: string; label: string }
-// apiBase lets the temporary fixture preview reuse this exact UI. The real page uses /api.
-interface Props { agencies: Option[]; useCases: Option[]; models: Option[]; apiBase?: string }
+interface Props { agencies: Option[]; useCases: Option[]; models: Option[] }
 
-export function DashboardClient({ agencies, useCases, models, apiBase = "/api" }: Props) {
+export function DashboardClient({ agencies, useCases, models }: Props) {
   const [preset, setPreset] = useState<Preset>("30d");
   const [filters, setFilters] = useState<Filters>(() => ({ ...presetRange("30d"), includeSimulated: true }));
   const [data, setData] = useState<MetricsPayload | null>(null);
@@ -29,12 +28,12 @@ export function DashboardClient({ agencies, useCases, models, apiBase = "/api" }
     const ctl = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`${apiBase}/metrics${query}`, { signal: ctl.signal })
+    fetch(`/api/metrics${query}`, { signal: ctl.signal })
       .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error((await r.json()).error ?? "Could not load the dashboard."))))
       .then((d: MetricsPayload) => { setData(d); setLoading(false); })
       .catch((e: Error) => { if (e.name !== "AbortError") { setError(e.message); setLoading(false); } });
     return () => ctl.abort();
-  }, [query, apiBase]);
+  }, [query]);
 
   const agencyCodes = agencies.map((a) => a.value);
   const labelOf = (m: string) => data?.modelLabels[m] ?? m;
@@ -48,7 +47,7 @@ export function DashboardClient({ agencies, useCases, models, apiBase = "/api" }
           <p className="text-sm" style={{ color: "var(--viz-text-2)" }}>Every model call, by agency and use case. Agency tags are simulated labels for cost allocation.</p>
         </header>
 
-        <FilterBar apiBase={apiBase} filters={filters} preset={preset} agencies={agencies} useCases={useCases} models={models}
+        <FilterBar filters={filters} preset={preset} agencies={agencies} useCases={useCases} models={models}
           showSimulatedBadge={filters.includeSimulated && !!data?.hasSimulated}
           onPreset={(p) => { setPreset(p); setFilters((f) => ({ ...f, ...presetRange(p) })); }}
           onChange={(patch) => setFilters((f) => ({ ...f, ...patch }))} />
@@ -59,7 +58,7 @@ export function DashboardClient({ agencies, useCases, models, apiBase = "/api" }
           </div>
         )}
         {error && <div role="alert" className="viz-card p-4 text-sm">{error}</div>}
-        {loading && !data && <p className="py-16 text-center text-sm" style={{ color: "var(--viz-muted)" }}>Loading&hellip;</p>}
+        {loading && !data && <p className="py-16 text-center text-sm" style={{ color: "var(--viz-text-2)" }}>Loading&hellip;</p>}
 
         {data && (
           <div className={loading ? "space-y-4 opacity-60 transition-opacity" : "space-y-4"} aria-busy={loading}>
@@ -75,11 +74,11 @@ export function DashboardClient({ agencies, useCases, models, apiBase = "/api" }
               <AlertsPanel alerts={data.alerts} />
               <WhatIfCard key={data.chatModels.length} data={data} />
             </div>
-            <CallsTable apiBase={apiBase} filters={filters} modelLabels={data.modelLabels} onTrace={setTraceId} />
+            <CallsTable filters={filters} modelLabels={data.modelLabels} onTrace={setTraceId} />
           </div>
         )}
       </main>
-      {traceId && <TraceDrawer apiBase={apiBase} requestId={traceId} onClose={() => setTraceId(null)} />}
+      {traceId && <TraceDrawer requestId={traceId} onClose={() => setTraceId(null)} />}
     </div>
   );
 }

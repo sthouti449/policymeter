@@ -6,7 +6,7 @@ function Tile({ label, value, note }: { label: string; value: string; note?: str
     <div className="viz-card p-4">
       <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>{label}</p>
       <p className="mt-1 text-2xl font-semibold" style={{ color: "var(--viz-text-1)" }}>{value}</p>
-      {note && <p className="mt-0.5 text-xs" style={{ color: "var(--viz-muted)" }}>{note}</p>}
+      {note && <p className="mt-0.5 text-xs" style={{ color: "var(--viz-text-2)" }}>{note}</p>}
     </div>
   );
 }

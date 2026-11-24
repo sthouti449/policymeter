@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AskAboutDemo } from "@/components/AskAboutDemo";
+import { SiteNav } from "@/components/SiteNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
+        <SiteNav />
+        <div id="content" tabIndex={-1}>{children}</div>
         <AskAboutDemo />
         <footer className="border-t px-4 py-4 text-center text-xs text-neutral-500">
           Independent demo. Not affiliated with or endorsed by VITA or the Commonwealth of Virginia. Built by{" "}

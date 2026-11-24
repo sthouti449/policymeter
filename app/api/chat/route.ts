@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { guard } from "@/lib/guardrails/guard";
+import { isSameOrigin } from "@/lib/guardrails/origin";
 import { answerPolicyQuestion } from "@/lib/rag/answer";
 import type { ChatEvent } from "@/lib/chat/types";
 
@@ -16,7 +17,7 @@ const bodySchema = z.object({
 
 const fail = (status: number, error: string) => NextResponse.json({ error }, { status });
 
-export async function POST(req: Request) {
+async function handle(req: Request) {
   let json: unknown;
   try {
     json = await req.json();
@@ -55,4 +56,15 @@ export async function POST(req: Request) {
   return new Response(stream, {
     headers: { "content-type": "text/event-stream; charset=utf-8", "cache-control": "no-store, no-transform", "x-accel-buffering": "no" },
   });
+}
+
+export async function POST(req: Request) {
+  if (!isSameOrigin(req)) return fail(403, "Cross-site requests are not allowed.");
+  try {
+    return await handle(req);
+  } catch (err) {
+    // Misconfiguration or an unexpected bug: log the detail, tell the browser nothing sensitive.
+    console.error("chat failed:", err instanceof Error ? err.message : err);
+    return fail(500, "Something went wrong. Please try again.");
+  }
 }

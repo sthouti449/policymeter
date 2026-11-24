@@ -30,7 +30,7 @@ export function ChartCard({ title, subtitle, summary, empty, chart, table }: Pro
         )}
       </header>
       {empty ? (
-        <p className="py-10 text-center text-sm" style={{ color: "var(--viz-muted)" }}>No spend for these filters.</p>
+        <p className="py-10 text-center text-sm" style={{ color: "var(--viz-text-2)" }}>No spend for these filters.</p>
       ) : asTable ? (
         <div className="max-h-72 overflow-auto">{table}</div>
       ) : (

@@ -14,7 +14,7 @@ export function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
       <h2 className="font-semibold">Alerts</h2>
       <p className="mb-3 text-xs" style={{ color: "var(--viz-text-2)" }}>Budget crossings and daily-cap hits. Each fires once per period.</p>
       {alerts.length === 0 ? (
-        <p className="py-6 text-center text-sm" style={{ color: "var(--viz-muted)" }}>No alerts yet.</p>
+        <p className="py-6 text-center text-sm" style={{ color: "var(--viz-text-2)" }}>No alerts yet.</p>
       ) : (
         <ul className="max-h-72 space-y-2 overflow-auto">
           {alerts.map((a) => {
@@ -25,7 +25,7 @@ export function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
                 <div>
                   <p><span className="font-medium">{label}</span> &middot; {a.agency}{a.simulated && <span style={{ color: "var(--viz-text-2)" }}> &middot; simulated</span>}</p>
                   <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>{a.message}</p>
-                  <p className="text-xs" style={{ color: "var(--viz-muted)" }}>{new Date(a.createdAt).toLocaleString()}</p>
+                  <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>{new Date(a.createdAt).toLocaleString()}</p>
                 </div>
               </li>
             );

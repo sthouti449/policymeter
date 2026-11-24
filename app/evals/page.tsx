@@ -51,7 +51,7 @@ export default async function EvalsPage({ searchParams }: { searchParams: Promis
         {selected && (
           <>
             <Scorecard targets={checkTargets(summaryOf(selected))} totalCostUsd={selected.totalCostUsd} questions={selected.questions} when={new Date(selected.createdAt).toLocaleString("en-US")} />
-            {selected.notes && <p className="text-xs" style={{ color: "var(--viz-muted)" }}>{selected.notes}</p>}
+            {selected.notes && <p className="text-xs" style={{ color: "var(--viz-text-2)" }}>{selected.notes}</p>}
             <RunTrend runs={runs} selectedId={selected.id} />
             <ResultsTable rows={results} />
           </>
